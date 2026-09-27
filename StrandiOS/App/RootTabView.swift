@@ -69,9 +69,21 @@ struct RootTabView: View {
     /// Today if they prefer it (keyed identically to the SettingsView toggle). Default ON.
     @AppStorage("noop.liquidTodayEnabled") private var liquidTodayEnabled = true
 
-    /// The Today tab root, honouring the liquid/classic preference.
+    /// Personal fork V1: the personal glance dashboard is this fork's DEFAULT Today, ahead of the
+    /// liquid/classic pair (same `@AppStorage` swap idiom as `liquidTodayEnabled` above). The
+    /// dashboard's own header menu writes this key too, so the wearer can always fall back to the
+    /// upstream layouts without a Settings trip. Default ON in this fork only.
+    @AppStorage("noop.personalTodayEnabled") private var personalTodayEnabled = true
+
+    /// The Today tab root, honouring the personal → liquid → classic preference chain.
     @ViewBuilder private var todayTabRoot: some View {
-        if liquidTodayEnabled { LiquidTodayView() } else { TodayView() }
+        if personalTodayEnabled {
+            PersonalTodayView()
+        } else if liquidTodayEnabled {
+            LiquidTodayView()
+        } else {
+            TodayView()
+        }
     }
 
     /// Native tab selection binding. SwiftUI sends taps on the already-selected item through the
