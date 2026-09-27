@@ -156,11 +156,13 @@ final class PersonalAlarmStore: ObservableObject {
 
     /// Attach the model and start the poller. Called when the schedules screen appears; the timer
     /// lives as long as the process does (iOS suspends it with the app — the documented limit).
+    /// The block hops to the main actor exactly the way `AppModel.scheduleDailySmartAlarmRearm`'s
+    /// timer does.
     func attach(model: AppModel) {
         self.model = model
         guard pollTimer == nil else { return }
         let timer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in
-            MainActor.assumeIsolated { self?.poll() }
+            Task { @MainActor in self?.poll() }
         }
         RunLoop.main.add(timer, forMode: .common)
         pollTimer = timer
@@ -453,7 +455,6 @@ private struct ScheduleEditorView: View {
                     timeCard
                     if kind == .reminder { patternCard }
                 }
-                .padding(.horizontal, 0)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

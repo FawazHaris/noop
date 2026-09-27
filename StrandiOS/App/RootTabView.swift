@@ -362,6 +362,10 @@ struct RootTabView: View {
                 // it ever reaches the host.
                 case .coach: CoachView()
                 case .alarms: SmartAlarmView()
+                // .wrist routes to the More tab's stack (handled above — the requestedDestination
+                // handler pushes MoreDestination.wrist there); this keeps the switch exhaustive and
+                // falls back to the Wrist screen if it ever reaches the pillar host.
+                case .wrist: WristView()
                 }
             }
             // The Trends/Today fallbacks above emit TabRoute value pushes (#198), which need a
