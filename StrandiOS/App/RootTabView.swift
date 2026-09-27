@@ -536,14 +536,21 @@ struct RootTabView: View {
                     // strap's single alarm.
                     MoreRow("Alarm schedules", "calendar", .personalAlarms)
                     MoreRow("Automations", "wand.and.stars", .automations)
-                    // The Test Centre (the diagnostics + bug-report hub) gets a first-class home here, not
-                    // just buried in Settings, so the feedback loop is one tap from the More tab.
-                    MoreRow("Test Centre", "stethoscope", .testCentre)
                     MoreRow("Siri & Shortcuts", "mic.fill", .siriShortcuts)
                     // #477 lives here rather than inside Settings: the strap-battery levers are the
                     // ones people reach for when a strap is running down, so they get their own row.
                     MoreRow("Power saving", "battery.25", .powerSaving)
                     MoreRow("Settings", "gearshape.fill", .settings)
+                }
+                // Personal fork V1: the Developer Lab. The Test Centre (diagnostics + bug-report hub,
+                // and the gate every protocol probe hangs behind) moves here, under its own clearly
+                // labelled section so the everyday list reads as the app and the lab reads as the lab.
+                // Trivially additive: `moreSection` is title-generic and MoreSectionPrefs stores the
+                // expanded set by title, and this title is deliberately NOT in the defaultExpanded seed
+                // — the lab starts COLLAPSED (the isolation posture the fork wants). Its gating inside
+                // (TestCentre.active per domain) is unchanged.
+                moreSection("Developer Lab") {
+                    MoreRow("Test Centre", "stethoscope", .testCentre)
                 }
             }
             // The rows push MoreDestination VALUES so a re-tap of the More tab can pop them off the
