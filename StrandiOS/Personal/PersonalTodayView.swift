@@ -235,7 +235,7 @@ struct PersonalTodayView: View {
                     quickButton("Ask Coach", icon: "sparkles", tint: StrandPalette.accent) {
                         router.openCoach()
                     }
-                    QuickSyncButton(model: model)
+                    QuickSyncButton()
                 }
                 HStack(spacing: NoopMetrics.gap) {
                     quickButton("Buzz strap", icon: "waveform.path", tint: StrandPalette.metricRose) {
