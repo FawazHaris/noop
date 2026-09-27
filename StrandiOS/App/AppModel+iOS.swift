@@ -39,6 +39,10 @@ extension AppModel {
                         await coach.send(question)
                     }
                 }
+            // Personal fork V1: "Show Wrist Status" — route to the Wrist screen through the shared
+            // NavRouter (the tab shell pushes it in the More tab's stack).
+            case .showWrist:
+                router?.openWrist()
             }
         }
     }
