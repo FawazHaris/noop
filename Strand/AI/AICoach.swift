@@ -960,6 +960,14 @@ final class AICoachEngine: ObservableObject {
     func buildFullContext() async -> String {
         var ctx = buildContext()
         ctx += "\n\n" + (await recentWorkoutsBlock())
+        // Personal fork V1: the structured TODAY / LAST NIGHT / 7-DAY-TRENDS block rides the same
+        // consent-gated, summary-only text channel (additive; everything above is unchanged). Built
+        // from the same `repo.days` the day-line summary reads, resolved through the same
+        // today/last-vitals accessors Today uses, so the two blocks cannot describe different data.
+        ctx += "\n\n" + CoachContextBuilder.structuredBlock(
+            days: repo.days,
+            today: repo.today,
+            lastNight: Repository.lastVitalsDay(days: repo.days))
         // Derived stress: a single Baevsky Stress Index summary line over today's R-R, computed the same
         // way StressView does. Gated here under `dataConsent` (the caller only reaches buildFullContext()
         // with consent on), so it rides the SAME consent + text-only channel as the HRV/RHR summary, a

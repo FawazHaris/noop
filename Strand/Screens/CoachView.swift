@@ -66,6 +66,7 @@ struct CoachView: View {
                        topBackground: liquidScaffoldSky()) {
             if coach.isConfigured {
                 connectedHeader
+                contextBadge
                 transcript
                 if let error = coach.errorText, !error.isEmpty {
                     errorBanner(error)
@@ -392,6 +393,38 @@ struct CoachView: View {
     }
 
     // MARK: - Connected state
+
+    /// Personal fork V1: an honest one-line statement of what context rides the next question —
+    /// labelled so the wearer can tell measured metrics, derived trends and opt-in extras apart.
+    private var contextBadge: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "doc.append")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(StrandPalette.textTertiary)
+                .accessibilityHidden(true)
+            Text(contextLine)
+                .font(StrandFont.footnote)
+                .foregroundStyle(StrandPalette.textTertiary)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+    }
+
+    /// What the engine will attach: the consent-gated summary (+ the fork's structured trends block
+    /// and the opt-in on-device signals when their switches are on). Mirrors what
+    /// `buildFullContext()` actually composes — no second source of truth, just its shape in words.
+    private var contextLine: String {
+        guard coach.dataConsent else {
+            return String(localized: "No data attached — data access is off in Coach settings.")
+        }
+        var parts = [String(localized: "measured 14-day metrics"),
+                     String(localized: "structured today + last night"),
+                     String(localized: "7-day trends")]
+        if coach.includeOnDeviceSignals {
+            parts.append(String(localized: "on-device signals"))
+        }
+        return String(localized: "Attached: ") + parts.joined(separator: ", ")
+    }
 
     private var connectedHeader: some View {
         HStack(spacing: 10) {
