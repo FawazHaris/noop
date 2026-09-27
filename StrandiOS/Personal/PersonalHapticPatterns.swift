@@ -12,8 +12,9 @@ import Foundation
 // No new opcodes, no speculative payloads: the loop COUNT is the only variable, and every value
 // below is one a shipped surface already uses (BuzzPattern single/double/triple/long = 1/2/3/5).
 
-/// The fork's four haptic presets, distinguishable by feel.
-enum PersonalHapticPattern: String, CaseIterable, Identifiable {
+/// The fork's four haptic presets, distinguishable by feel. Codable (raw value) so reminder
+/// schedules can persist their pattern.
+enum PersonalHapticPattern: String, CaseIterable, Identifiable, Codable {
     /// One short buzz — a gentle reminder ("stand up", "wind down soon").
     case reminder
     /// Two short buzzes — something happened (a schedule fired, an event marker).

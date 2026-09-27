@@ -532,6 +532,9 @@ struct RootTabView: View {
                     // Personal fork V1: the wrist status screen (link chain, device/stream/sync
                     // cards, proven actions, alarms + quiet-hours summary).
                     MoreRow("Wrist", "watch.smart", .wrist)
+                    // Personal fork V1: app-side schedules (wake times + reminders) alongside the
+                    // strap's single alarm.
+                    MoreRow("Alarm schedules", "calendar", .personalAlarms)
                     MoreRow("Automations", "wand.and.stars", .automations)
                     // The Test Centre (the diagnostics + bug-report hub) gets a first-class home here, not
                     // just buried in Settings, so the feedback loop is one tap from the More tab.
@@ -628,6 +631,8 @@ private enum MoreDestination: Hashable {
     case alarms, automations, testCentre, siriShortcuts, powerSaving, settings
     // Personal fork V1: the wrist status screen (see MoreRow above).
     case wrist
+    // Personal fork V1: app-side alarm schedules (see MoreRow above).
+    case personalAlarms
 
     @ViewBuilder var destination: some View {
         switch self {
@@ -655,6 +660,7 @@ private enum MoreDestination: Hashable {
         case .shortcutsExport: ShortcutExportSettingsView()
         case .alarms:          SmartAlarmView()
         case .wrist:           WristView()
+        case .personalAlarms:  PersonalAlarmsView()
         case .automations:     AutomationsView()
         case .testCentre:      TestCentreView()
         case .siriShortcuts:   SiriShortcutsSettingsView()
