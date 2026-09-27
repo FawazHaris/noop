@@ -222,6 +222,16 @@ struct RootTabView: View {
             case .insightsHub, .labBook, .fusedRecord, .rhythm, .alarms:
                 routedPillar = dest
                 router.requestedDestination = nil
+            case .wrist:
+                // Personal fork V1: the Wrist screen lives in the More tab's stack. Switch to that
+                // tab, reset its path to the root, and push the destination value — the same
+                // value-push the More rows use, so the push is poppable and re-tap-safe.
+                withAnimation(.timingCurve(0.22, 1, 0.36, 1, duration: 0.24)) {
+                    selectedTab = 4
+                    tabPaths[4] = NavigationPath()
+                    tabPaths[4].append(MoreDestination.wrist)
+                }
+                router.requestedDestination = nil
             case .coach:
                 // K3: Coach is now a top-level tab (tag 3) — switch to it directly instead of
                 // presenting it as a pillar sheet.
@@ -519,6 +529,9 @@ struct RootTabView: View {
                     // so it can't compile or apply on iPhone. iPhone's wrist-alert controls live on the
                     // Automations screen instead. Its absence from the iPhone More list is correct.
                     MoreRow("Alarms", "alarm.fill", .alarms)
+                    // Personal fork V1: the wrist status screen (link chain, device/stream/sync
+                    // cards, proven actions, alarms + quiet-hours summary).
+                    MoreRow("Wrist", "watch.smart", .wrist)
                     MoreRow("Automations", "wand.and.stars", .automations)
                     // The Test Centre (the diagnostics + bug-report hub) gets a first-class home here, not
                     // just buried in Settings, so the feedback loop is one tap from the More tab.
@@ -613,6 +626,8 @@ private enum MoreDestination: Hashable {
     case live, workouts, liftLog, health, labBook, stress, breathe, intervals, rhythm
     case fusedRecord, appleHealth, miBand, dataSources, backupSync, shortcutsExport, noopLimitations
     case alarms, automations, testCentre, siriShortcuts, powerSaving, settings
+    // Personal fork V1: the wrist status screen (see MoreRow above).
+    case wrist
 
     @ViewBuilder var destination: some View {
         switch self {
@@ -639,6 +654,7 @@ private enum MoreDestination: Hashable {
         case .backupSync:      BackupSyncView()
         case .shortcutsExport: ShortcutExportSettingsView()
         case .alarms:          SmartAlarmView()
+        case .wrist:           WristView()
         case .automations:     AutomationsView()
         case .testCentre:      TestCentreView()
         case .siriShortcuts:   SiriShortcutsSettingsView()

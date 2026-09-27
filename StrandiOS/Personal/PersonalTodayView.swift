@@ -40,7 +40,7 @@ struct PersonalTodayView: View {
     var body: some View {
         ScreenScaffold(title: nil, onRefresh: { await repo.refresh() }) {
             header
-            GuardianBannerView()
+            GuardianStatusBanner()
             LiveNowCard()
             todaySection
             lastNightSection
@@ -278,82 +278,6 @@ struct PersonalTodayView: View {
             .font(StrandFont.footnote)
             .foregroundStyle(StrandPalette.textTertiary)
             .fixedSize(horizontal: false, vertical: true)
-    }
-}
-
-// MARK: - Guardian banner (leaf: observes LiveState only)
-
-/// One banner naming the current connection state, shown only when there is something to say
-/// (the healthy state stays silent — no chrome for the good case).
-private struct GuardianBannerView: View {
-    @EnvironmentObject private var live: LiveState
-    @EnvironmentObject private var model: AppModel
-    @EnvironmentObject private var router: NavRouter
-
-    private var state: GuardianState {
-        ConnectionGuardian.resolve(ConnectionGuardian.Snapshot(live: live))
-    }
-
-    var body: some View {
-        if state.severity != .healthy {
-            NoopCard(padding: 16, tint: tint) {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 10) {
-                        Image(systemName: icon)
-                            .foregroundStyle(tint)
-                            .accessibilityHidden(true)
-                        Text(state.title)
-                            .font(StrandFont.headline)
-                            .foregroundStyle(StrandPalette.textPrimary)
-                    }
-                    Text(state.message)
-                        .font(StrandFont.footnote)
-                        .foregroundStyle(StrandPalette.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    ForEach(state.actions, id: \.self) { action in
-                        Button {
-                            run(action)
-                        } label: {
-                            Text(label(for: action))
-                        }
-                        .buttonStyle(NoopButtonStyle(.secondary, fullWidth: true))
-                    }
-                }
-            }
-        }
-    }
-
-    private var tint: Color {
-        switch state.severity {
-        case .healthy, .info:    return StrandPalette.accent
-        case .attention:         return StrandPalette.statusWarning
-        case .warning:           return StrandPalette.statusCritical
-        }
-    }
-
-    private var icon: String {
-        switch state.severity {
-        case .healthy, .info:    return "antenna.radiowaves.left.and.right"
-        case .attention:         return "exclamationmark.triangle"
-        case .warning:           return "exclamationmark.triangle.fill"
-        }
-    }
-
-    private func label(for action: GuardianAction) -> String {
-        switch action {
-        case .reconnect:   return String(localized: "Reconnect strap")
-        case .refresh:     return String(localized: "Refresh data")
-        case .openDevices: return String(localized: "Open Devices")
-        }
-    }
-
-    /// Recovery actions map onto existing entry points only.
-    private func run(_ action: GuardianAction) {
-        switch action {
-        case .reconnect:   model.ble.connect()
-        case .refresh:     Task { await model.repo.refresh() }
-        case .openDevices: router.openDevices()
-        }
     }
 }
 
