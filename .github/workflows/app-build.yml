@@ -9,6 +9,26 @@
 name: App build (macOS + iOS)
 
 on:
+  # Personal fork V1: this fork lands its work as DIRECT PUSHES to main (single-wearer flow, no
+  # PRs), and this workflow is the only CI that compiles the app targets and runs StrandTests —
+  # swift-packages does NOT compile app targets, so without a push trigger every fork push ran
+  # nothing (the audit's "one fork-local CI change"). The path filter is duplicated verbatim below
+  # because GitHub Actions has no YAML anchors. Upstream keeps this block OFF on purpose: every
+  # upstream change reaches main through a PR the pull_request trigger already gates, and macOS
+  # runners bill at 10x Linux — a fork that wants that same cost posture can delete this block.
+  push:
+    branches: [main]
+    paths:
+      - 'Strand/**'
+      - 'StrandTests/**'
+      - 'StrandiOS/**'
+      - 'StrandiOSShared/**'
+      - 'StrandiOSWidgets/**'
+      - 'NOOPWatch/**'
+      - 'NOOPWatchComplications/**'
+      - 'Packages/**'
+      - 'project.yml'
+      - '.github/workflows/app-build.yml'
   pull_request:
     branches: [main]
     paths:
