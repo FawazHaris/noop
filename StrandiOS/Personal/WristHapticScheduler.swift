@@ -127,8 +127,10 @@ final class WristHapticScheduler {
             content.title = title
             content.body = body
 
-            // Replace every shape this schedule may previously have used.
-            cancelNotificationFallback(id: id)
+            // Replace every shape this schedule may previously have used. Do it directly inside
+            // this notification-center callback rather than hopping through the @MainActor helper.
+            let ownedIds = [id] + (1...7).map { "\(id)-w\($0)" }
+            center.removePendingNotificationRequests(withIdentifiers: ownedIds)
 
             if oneOffDay != nil {
                 let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute],
