@@ -6,7 +6,7 @@ import AppIntents
 /// into the running `AppModel` directly (BLE only lives in the foreground app), so they enqueue here
 /// and the app drains the queue when it next becomes active.
 enum PendingIntents {
-    enum Action: String { case markMoment, buzz, askCoach }
+    enum Action: String { case markMoment, buzz, askCoach, showWrist }
 
     private static let key = "noop.pendingIntents"
     /// K9: the question text for a pending `.askCoach` action. Stored separately because the
@@ -125,6 +125,21 @@ struct AskCoachIntent: AppIntent {
     }
 }
 
+/// Personal fork V1: open NOOP on the Wrist status screen (link chain, live stream, sync state
+/// and the proven actions). Queues a pending action and opens the app, which drains it on
+/// `.active` and routes through the shared NavRouter — the same deferred pattern every intent
+/// here uses, since intents can't reach the live AppModel directly.
+struct ShowWristStatusIntent: AppIntent {
+    static var title: LocalizedStringResource = "Show Wrist Status"
+    static var description = IntentDescription("Open NOOP's Wrist screen: your strap's link, live stream and sync state.")
+    static var openAppWhenRun = true
+
+    func perform() async throws -> some IntentResult & ProvidesDialog {
+        PendingIntents.append(.showWrist, at: Date())
+        return .result(dialog: "Opening wrist status.")
+    }
+}
+
 /// Surfaces NOOP's intents to Siri, Spotlight, and the Shortcuts gallery without any user setup.
 struct NOOPShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
@@ -153,6 +168,15 @@ struct NOOPShortcuts: AppShortcutsProvider {
                     ],
                     shortTitle: "Ask Coach",
                     systemImageName: "sparkles")
+        // Personal fork V1: the Wrist status screen via Siri / Shortcuts. (Buzz / Ask Coach / Sync
+        // shortcuts already exist upstream as BuzzStrapIntent / AskCoachIntent / SyncStrapIntent.)
+        AppShortcut(intent: ShowWristStatusIntent(),
+                    phrases: [
+                        "Show my \(.applicationName) wrist status",
+                        "How is my \(.applicationName) strap",
+                    ],
+                    shortTitle: "Wrist Status",
+                    systemImageName: "watch.smart")
     }
 }
 #endif

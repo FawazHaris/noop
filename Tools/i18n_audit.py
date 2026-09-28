@@ -740,7 +740,7 @@ def _mask_swift_comments(text: str) -> str:
     comment reads exactly like copy. Three findings came from prose: a `//` note explaining that
     `"\\r\\nW" != "W"`, and two `///` comments quoting "the newest row with any recovery score" to say
     what the code deliberately does NOT anchor on.
-    
+
     The second pair is the instructive one. The comment reads "today's row (not "the newest row ...")",
     and `row` is a discovered call name, so `row (` matched and the quoted phrase inside became its first
     argument. Masking is the fix rather than tightening that pattern, because prose can contain any call

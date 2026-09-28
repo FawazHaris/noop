@@ -335,6 +335,9 @@ struct RootView: View {
             // stays in exactly one place.
             case .coach: selection = .coach
             case .alarms: selection = .smartAlarm
+            // Personal fork V1: the Wrist status screen is an iOS surface; the Mac equivalent of
+            // "how is the strap doing" is the Devices screen (battery, firmware, link state).
+            case .wrist: selection = .devices
             case nil: break
             }
             if dest != nil { router.requestedDestination = nil }

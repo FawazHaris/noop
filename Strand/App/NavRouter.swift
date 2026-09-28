@@ -35,6 +35,10 @@ final class NavRouter: ObservableObject {
         /// Also the K5 scheduled morning-brief notification's tap-through target.
         case coach
         case alarms
+        /// Personal fork V1: the Wrist status screen. Routed from the "Show wrist status"
+        /// shortcut (a pending intent drained on foreground). The shells map it themselves — iOS
+        /// pushes it in the More tab's stack; macOS lands on Devices, its closest surface.
+        case wrist
 
         var id: String { rawValue }
 
@@ -70,6 +74,8 @@ final class NavRouter: ObservableObject {
     func openCoach() { requestedDestination = .coach }
     /// Open the existing wake-alarm and wind-down settings from Sleep.
     func openAlarms() { requestedDestination = .alarms }
+    /// Personal fork V1: open the Wrist status screen (link/stream/sync + proven actions).
+    func openWrist() { requestedDestination = .wrist }
     /// Open the v5 Insights hub (the n-of-1 "what moves your Charge" surface).
     func openInsightsHub() { requestedDestination = .insightsHub }
     /// Open the Lab Book (private health-records logbook).

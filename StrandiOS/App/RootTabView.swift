@@ -30,6 +30,7 @@ struct RootTabView: View {
     let homeScreenQuickActionsEnabled: Bool
 
     @EnvironmentObject private var repo: Repository
+    @EnvironmentObject private var model: AppModel
     /// Cross-screen navigation requests (e.g. Live → "Manage devices"). Devices isn't a tab — it lives
     /// behind the More list — so a request presents it as a sheet, matching the quick-action screens.
     @EnvironmentObject private var router: NavRouter
@@ -69,9 +70,21 @@ struct RootTabView: View {
     /// Today if they prefer it (keyed identically to the SettingsView toggle). Default ON.
     @AppStorage("noop.liquidTodayEnabled") private var liquidTodayEnabled = true
 
-    /// The Today tab root, honouring the liquid/classic preference.
+    /// Personal fork V1: the personal glance dashboard is this fork's DEFAULT Today, ahead of the
+    /// liquid/classic pair (same `@AppStorage` swap idiom as `liquidTodayEnabled` above). The
+    /// dashboard's own header menu writes this key too, so the wearer can always fall back to the
+    /// upstream layouts without a Settings trip. Default ON in this fork only.
+    @AppStorage("noop.personalTodayEnabled") private var personalTodayEnabled = true
+
+    /// The Today tab root, honouring the personal → liquid → classic preference chain.
     @ViewBuilder private var todayTabRoot: some View {
-        if liquidTodayEnabled { LiquidTodayView() } else { TodayView() }
+        if personalTodayEnabled {
+            PersonalTodayView()
+        } else if liquidTodayEnabled {
+            LiquidTodayView()
+        } else {
+            TodayView()
+        }
     }
 
     /// Native tab selection binding. SwiftUI sends taps on the already-selected item through the
@@ -176,6 +189,9 @@ struct RootTabView: View {
             .simultaneousGesture(tabSwipeGesture,
                                  including: tabPaths[selectedTab].isEmpty ? .all : .subviews)
         .task {
+            // Personal reminders must be armed for foreground delivery at app launch, not only after
+            // visiting the Alarm schedules screen. attach() is idempotent and owns one shared timer.
+            PersonalAlarmStore.shared.attach(model: model)
             await repo.refresh()
             // Backup & Sync: on-launch catch-up (see RootView). Detached + utility priority so a
             // 100MB+ whole-DB ZIP never blocks startup; gated on the auto toggle (default OFF). (Must-fix #4.)
@@ -209,6 +225,16 @@ struct RootTabView: View {
                 router.requestedDestination = nil
             case .insightsHub, .labBook, .fusedRecord, .rhythm, .alarms:
                 routedPillar = dest
+                router.requestedDestination = nil
+            case .wrist:
+                // Personal fork V1: the Wrist screen lives in the More tab's stack. Switch to that
+                // tab, reset its path to the root, and push the destination value — the same
+                // value-push the More rows use, so the push is poppable and re-tap-safe.
+                withAnimation(.timingCurve(0.22, 1, 0.36, 1, duration: 0.24)) {
+                    selectedTab = 4
+                    tabPaths[4] = NavigationPath()
+                    tabPaths[4].append(MoreDestination.wrist)
+                }
                 router.requestedDestination = nil
             case .coach:
                 // K3: Coach is now a top-level tab (tag 3) — switch to it directly instead of
@@ -340,6 +366,10 @@ struct RootTabView: View {
                 // it ever reaches the host.
                 case .coach: CoachView()
                 case .alarms: SmartAlarmView()
+                // .wrist routes to the More tab's stack (handled above — the requestedDestination
+                // handler pushes MoreDestination.wrist there); this keeps the switch exhaustive and
+                // falls back to the Wrist screen if it ever reaches the pillar host.
+                case .wrist: WristView()
                 }
             }
             // The Trends/Today fallbacks above emit TabRoute value pushes (#198), which need a
@@ -507,15 +537,28 @@ struct RootTabView: View {
                     // so it can't compile or apply on iPhone. iPhone's wrist-alert controls live on the
                     // Automations screen instead. Its absence from the iPhone More list is correct.
                     MoreRow("Alarms", "alarm.fill", .alarms)
+                    // Personal fork V1: the wrist status screen (link chain, device/stream/sync
+                    // cards, proven actions, alarms + quiet-hours summary).
+                    MoreRow("Wrist", "watch.smart", .wrist)
+                    // Personal fork V1: app-side schedules (wake times + reminders) alongside the
+                    // strap's single alarm.
+                    MoreRow("Alarm schedules", "calendar", .personalAlarms)
                     MoreRow("Automations", "wand.and.stars", .automations)
-                    // The Test Centre (the diagnostics + bug-report hub) gets a first-class home here, not
-                    // just buried in Settings, so the feedback loop is one tap from the More tab.
-                    MoreRow("Test Centre", "stethoscope", .testCentre)
                     MoreRow("Siri & Shortcuts", "mic.fill", .siriShortcuts)
                     // #477 lives here rather than inside Settings: the strap-battery levers are the
                     // ones people reach for when a strap is running down, so they get their own row.
                     MoreRow("Power saving", "battery.25", .powerSaving)
                     MoreRow("Settings", "gearshape.fill", .settings)
+                }
+                // Personal fork V1: the Developer Lab. The Test Centre (diagnostics + bug-report hub,
+                // and the gate every protocol probe hangs behind) moves here, under its own clearly
+                // labelled section so the everyday list reads as the app and the lab reads as the lab.
+                // Trivially additive: `moreSection` is title-generic and MoreSectionPrefs stores the
+                // expanded set by title, and this title is deliberately NOT in the defaultExpanded seed
+                // — the lab starts COLLAPSED (the isolation posture the fork wants). Its gating inside
+                // (TestCentre.active per domain) is unchanged.
+                moreSection("Developer Lab") {
+                    MoreRow("Test Centre", "stethoscope", .testCentre)
                 }
             }
             // The rows push MoreDestination VALUES so a re-tap of the More tab can pop them off the
@@ -601,6 +644,10 @@ private enum MoreDestination: Hashable {
     case live, workouts, liftLog, health, labBook, stress, breathe, intervals, rhythm
     case fusedRecord, appleHealth, miBand, dataSources, backupSync, shortcutsExport, noopLimitations
     case alarms, automations, testCentre, siriShortcuts, powerSaving, settings
+    // Personal fork V1: the wrist status screen (see MoreRow above).
+    case wrist
+    // Personal fork V1: app-side alarm schedules (see MoreRow above).
+    case personalAlarms
 
     @ViewBuilder var destination: some View {
         switch self {
@@ -627,6 +674,8 @@ private enum MoreDestination: Hashable {
         case .backupSync:      BackupSyncView()
         case .shortcutsExport: ShortcutExportSettingsView()
         case .alarms:          SmartAlarmView()
+        case .wrist:           WristView()
+        case .personalAlarms:  PersonalAlarmsView()
         case .automations:     AutomationsView()
         case .testCentre:      TestCentreView()
         case .siriShortcuts:   SiriShortcutsSettingsView()
