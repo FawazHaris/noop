@@ -222,7 +222,10 @@ enum ConnectionGuardian {
         if !s.backfilling, let err = s.lastSyncError, !err.isEmpty {
             return .staleSync(hoursAgo: nil, message: err)
         }
-        if !s.backfilling, let synced = s.lastSyncedAt {
+        if !s.backfilling {
+            guard let synced = s.lastSyncedAt else {
+                return .staleSync(hoursAgo: nil, message: nil)
+            }
             let hoursAgo = Int(now.timeIntervalSince1970 - synced) / 3600
             if hoursAgo >= Self.staleSyncHours {
                 return .staleSync(hoursAgo: hoursAgo, message: nil)

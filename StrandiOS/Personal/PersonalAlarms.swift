@@ -56,10 +56,15 @@ struct PersonalAlarmSchedule: Codable, Identifiable, Equatable {
     /// The haptic pattern a reminder fires (ignored for wake schedules).
     var pattern: PersonalHapticPattern = .reminder
 
+    /// Exact-date wake alarms have no supported delivery channel. Keep legacy records editable,
+    /// but never present them as upcoming or allow new ones to be saved/enabled.
+    var isSupported: Bool { kind != .wake || oneOffDay == nil }
+
     /// Next strictly-future occurrence, or nil when this schedule will never fire again (a passed
     /// one-off). Repeating schedules resolve through the SAME pure `nextSmartAlarmDate` the smart
     /// alarm arms from, so the two features cannot drift on the calendar math.
     func nextOccurrence(from now: Date = Date(), calendar: Calendar = .current) -> Date? {
+        guard isSupported else { return nil }
         if let day = oneOffDay {
             var comps = calendar.dateComponents([.year, .month, .day], from: day)
             comps.hour = minuteOfDay / 60
@@ -105,6 +110,7 @@ final class PersonalAlarmStore: ObservableObject {
     // MARK: CRUD
 
     func upsert(_ schedule: PersonalAlarmSchedule) {
+        guard schedule.isSupported else { return }
         if let idx = schedules.firstIndex(where: { $0.id == schedule.id }) {
             schedules[idx] = schedule
         } else {
@@ -121,6 +127,7 @@ final class PersonalAlarmStore: ObservableObject {
 
     func setEnabled(id: UUID, _ enabled: Bool) {
         guard let idx = schedules.firstIndex(where: { $0.id == id }) else { return }
+        guard !enabled || schedules[idx].isSupported else { return }
         schedules[idx].enabled = enabled
         refreshNotificationFallbacks()
     }
@@ -335,7 +342,7 @@ struct PersonalAlarmsView: View {
                         Text("next \(Self.stamp(next))")
                             .font(StrandFont.footnote)
                             .foregroundStyle(StrandPalette.textTertiary)
-                    } else if schedule.oneOffDay != nil {
+                    } else if schedule.isSupported && schedule.oneOffDay != nil {
                         Text("passed")
                             .font(StrandFont.footnote)
                             .foregroundStyle(StrandPalette.textTertiary)
@@ -347,6 +354,7 @@ struct PersonalAlarmsView: View {
                     set: { store.setEnabled(id: schedule.id, $0) }
                 ))
                 .labelsHidden().toggleStyle(.switch).tint(StrandPalette.accent)
+                .disabled(!schedule.isSupported)
                 .accessibilityLabel(Text("Schedule enabled"))
             }
             HStack(spacing: NoopMetrics.gap) {
@@ -482,6 +490,7 @@ private struct ScheduleEditorView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") { save() }
                         .font(StrandFont.headline.weight(.semibold))
+                        .disabled(kind == .wake && oneOff)
                 }
             }
         }
@@ -537,7 +546,7 @@ private struct ScheduleEditorView: View {
                     DatePicker("Day", selection: $oneOffDay, displayedComponents: .date)
                         .datePickerStyle(.compact)
                     if kind == .wake {
-                        Text("The strap cannot hold an exact-date alarm. This wake schedule will stay unarmed; choose a repeating wake schedule or a one-off reminder instead.")
+                        Text("One-off wake schedules cannot be armed on the strap because its alarm supports repeating weekdays only. Choose a repeating wake schedule, or use a one-off reminder for a phone notification.")
                             .font(StrandFont.caption)
                             .foregroundStyle(StrandPalette.textTertiary)
                             .fixedSize(horizontal: false, vertical: true)
@@ -587,6 +596,7 @@ private struct ScheduleEditorView: View {
     }
 
     private func save() {
+        guard kind != .wake || !oneOff else { return }
         var saved = draft
         saved.label = label.trimmingCharacters(in: .whitespacesAndNewlines)
         saved.kind = kind

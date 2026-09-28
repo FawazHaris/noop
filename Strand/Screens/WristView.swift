@@ -240,7 +240,7 @@ struct WristView: View {
                            kind: .secondary, fullWidth: true) {
                     model.buzzStrapOnce()
                 }
-                .disabled(!live.connected)
+                .disabled(!live.connected || !live.encryptedBond)
                 NoopButton(live.backfilling ? "Syncing…" : "Sync now", systemImage: "arrow.triangle.2.circlepath",
                            kind: .secondary, fullWidth: true) {
                     model.ble.syncNow()

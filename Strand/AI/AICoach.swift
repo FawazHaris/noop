@@ -967,7 +967,7 @@ final class AICoachEngine: ObservableObject {
         ctx += "\n\n" + CoachContextBuilder.structuredBlock(
             days: repo.days,
             today: repo.today,
-            lastNight: Repository.lastVitalsDay(days: repo.days))
+            lastNight: Repository.lastNightDay(today: repo.today, days: repo.days))
         // Derived stress: a single Baevsky Stress Index summary line over today's R-R, computed the same
         // way StressView does. Gated here under `dataConsent` (the caller only reaches buildFullContext()
         // with consent on), so it rides the SAME consent + text-only channel as the HRV/RHR summary, a

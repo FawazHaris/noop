@@ -635,6 +635,13 @@ final class Repository: ObservableObject {
         lastVitalsDay(days: days, todayKey: max(logicalDayKey(now), localDayKey(now)))
     }
 
+    /// Today's banked sleep is last night, including a sleep-only row without vitals. Carry the
+    /// last vitals row only when today's row has no sleep, shared by Today and Coach.
+    static func lastNightDay(today: DailyMetric?, days: [DailyMetric], now: Date = Date()) -> DailyMetric? {
+        if let today, today.totalSleepMin != nil { return today }
+        return lastVitalsDay(days: days, now: now)
+    }
+
     /// Explicit-`todayKey` overload for call sites that already hold the resolved today key (e.g. Today,
     /// which passes `displayDay?.day ?? selectedDayKey`). Forwards to the pure package selector. Pass the
     /// future-clock-safe key (the later of logical/local) so the `< todayKey` bound is honest.

@@ -213,8 +213,7 @@ struct PersonalTodayView: View {
     /// The night the LAST NIGHT tiles describe: today's row when it has a banked night, else the
     /// last vitals day. One resolver, so the tiles and the caption cannot disagree.
     private var lastNightRow: DailyMetric? {
-        if let d = displayDay, d.totalSleepMin != nil { return d }
-        return vitalsDay
+        Repository.lastNightDay(today: displayDay, days: repo.days)
     }
 
     private var sleepDurationText: String {
@@ -409,19 +408,20 @@ private struct NextAlarmCard: View {
         !(model.whoop5Detected && !PuffinExperiment.isEnabled)
     }
 
-    private var nextAlarm: Date? {
+    private func nextAlarm(from now: Date) -> Date? {
         guard behavior.smartAlarmEnabled, strapAlarmWillArm else { return nil }
         return AppModel.nextSmartAlarmDate(minutes: behavior.smartAlarmMinutes,
                                            weekdays: behavior.smartAlarmWeekdays,
-                                           overrides: WindDownNudge.perDayWakeOverrides)
+                                           overrides: WindDownNudge.perDayWakeOverrides,
+                                           from: now)
     }
 
     var body: some View {
-        NoopCard(padding: NoopMetrics.cardPadding, tint: nextAlarm != nil ? StrandPalette.restColor : nil) {
+        NoopCard(padding: NoopMetrics.cardPadding, tint: behavior.smartAlarmEnabled && strapAlarmWillArm ? StrandPalette.restColor : nil) {
             VStack(alignment: .leading, spacing: NoopMetrics.cardInnerSpacing) {
                 Text("Next").strandOverline()
-                if let next = nextAlarm {
-                    TimelineView(.periodic(from: .now, by: 60)) { tick in
+                TimelineView(.periodic(from: .now, by: 60)) { tick in
+                    if let next = nextAlarm(from: tick.date) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(Self.countdown(to: next, from: tick.date))
                                 .font(StrandFont.number(22))
@@ -430,18 +430,18 @@ private struct NextAlarmCard: View {
                                 .font(StrandFont.footnote)
                                 .foregroundStyle(StrandPalette.textSecondary)
                         }
+                        Text("Strap wake-alarm. It buzzes from the strap's own firmware, even if your phone is asleep.")
+                            .font(StrandFont.footnote)
+                            .foregroundStyle(StrandPalette.textTertiary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } else {
+                        Text("No strap alarm armed")
+                            .font(StrandFont.headline)
+                            .foregroundStyle(StrandPalette.textSecondary)
+                        Text("The strap holds one wake alarm. Set it under Alarms.")
+                            .font(StrandFont.footnote)
+                            .foregroundStyle(StrandPalette.textTertiary)
                     }
-                    Text("Strap wake-alarm. It buzzes from the strap's own firmware, even if your phone is asleep.")
-                        .font(StrandFont.footnote)
-                        .foregroundStyle(StrandPalette.textTertiary)
-                        .fixedSize(horizontal: false, vertical: true)
-                } else {
-                    Text("No strap alarm armed")
-                        .font(StrandFont.headline)
-                        .foregroundStyle(StrandPalette.textSecondary)
-                    Text("The strap holds one wake alarm. Set it under Alarms.")
-                        .font(StrandFont.footnote)
-                        .foregroundStyle(StrandPalette.textTertiary)
                 }
                 Button {
                     router.openAlarms()
