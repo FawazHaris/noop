@@ -30,6 +30,7 @@ struct RootTabView: View {
     let homeScreenQuickActionsEnabled: Bool
 
     @EnvironmentObject private var repo: Repository
+    @EnvironmentObject private var model: AppModel
     /// Cross-screen navigation requests (e.g. Live → "Manage devices"). Devices isn't a tab — it lives
     /// behind the More list — so a request presents it as a sheet, matching the quick-action screens.
     @EnvironmentObject private var router: NavRouter
@@ -188,6 +189,9 @@ struct RootTabView: View {
             .simultaneousGesture(tabSwipeGesture,
                                  including: tabPaths[selectedTab].isEmpty ? .all : .subviews)
         .task {
+            // Personal reminders must be armed for foreground delivery at app launch, not only after
+            // visiting the Alarm schedules screen. attach() is idempotent and owns one shared timer.
+            PersonalAlarmStore.shared.attach(model: model)
             await repo.refresh()
             // Backup & Sync: on-launch catch-up (see RootView). Detached + utility priority so a
             // 100MB+ whole-DB ZIP never blocks startup; gated on the auto toggle (default OFF). (Must-fix #4.)
