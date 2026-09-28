@@ -468,6 +468,258 @@ add("Sync due", [
     "Требуется синхронизация", "需要同步", "需要同步"
 ])
 
+
+add("Sync strap", [
+    "Armband synchronisieren", "Sincronizar pulsera", "Synchroniser le bracelet",
+    "Sincronizza bracciale", "Synchronizuj pasek", "Sincronizar bracelete",
+    "Синхронизировать браслет", "同步腕带", "同步腕帶"
+])
+
+add("Sync strap now", [
+    "Armband jetzt synchronisieren", "Sincronizar pulsera ahora", "Synchroniser le bracelet maintenant",
+    "Sincronizza ora il bracciale", "Synchronizuj pasek teraz", "Sincronizar bracelete agora",
+    "Синхронизировать браслет сейчас", "立即同步腕带", "立即同步腕帶"
+])
+
+add("The link is up, but no readable sample has arrived for about %lld s. Reconnect usually clears this.", [
+    "Die Verbindung steht, aber seit etwa %lld s ist kein lesbares Sample eingegangen. Eine erneute Verbindung behebt das meist.",
+    "La conexión está activa, pero no ha llegado ninguna muestra legible desde hace unos %lld s. Volver a conectar suele solucionarlo.",
+    "La connexion est active, mais aucun échantillon lisible n’est arrivé depuis environ %lld s. Une reconnexion règle généralement le problème.",
+    "La connessione è attiva, ma da circa %lld s non è arrivato alcun campione leggibile. Riconnettere di solito risolve il problema.",
+    "Połączenie jest aktywne, ale od około %lld s nie dotarła żadna czytelna próbka. Ponowne połączenie zwykle rozwiązuje problem.",
+    "A ligação está ativa, mas não chegou nenhuma amostra legível há cerca de %lld s. Voltar a ligar costuma resolver.",
+    "Соединение активно, но уже около %lld с не поступало читаемых данных. Повторное подключение обычно помогает.",
+    "连接正常，但约 %lld 秒未收到可读取的样本。重新连接通常可以解决。",
+    "連線正常，但約 %lld 秒未收到可讀取的樣本。重新連線通常可以解決。"
+])
+
+add("The link is up, but no readable sample has arrived yet this session. Reconnect usually clears this.", [
+    "Die Verbindung steht, aber in dieser Sitzung ist noch kein lesbares Sample eingegangen. Eine erneute Verbindung behebt das meist.",
+    "La conexión está activa, pero aún no ha llegado ninguna muestra legible en esta sesión. Volver a conectar suele solucionarlo.",
+    "La connexion est active, mais aucun échantillon lisible n’est encore arrivé pendant cette session. Une reconnexion règle généralement le problème.",
+    "La connessione è attiva, ma in questa sessione non è ancora arrivato alcun campione leggibile. Riconnettere di solito risolve il problema.",
+    "Połączenie jest aktywne, ale w tej sesji nie dotarła jeszcze żadna czytelna próbka. Ponowne połączenie zwykle rozwiązuje problem.",
+    "A ligação está ativa, mas ainda não chegou nenhuma amostra legível nesta sessão. Voltar a ligar costuma resolver.",
+    "Соединение активно, но в этом сеансе ещё не поступало читаемых данных. Повторное подключение обычно помогает.",
+    "连接正常，但本次会话尚未收到可读取的样本。重新连接通常可以解决。",
+    "連線正常，但本次工作階段尚未收到可讀取的樣本。重新連線通常可以解決。"
+])
+
+add("The strap holds ONE alarm — that's a hardware limit. NOOP holds as many schedules as you like. \"Arm as strap alarm\" copies a wake schedule into the strap's single alarm (the same one the Alarms screen edits). Reminders buzz your wrist only while NOOP is running on your phone — iOS suspends backgrounded apps — and schedule a phone notification as a fallback. Quiet hours silence reminders, never the wake alarm.", [
+    "Das Armband speichert EINEN Alarm — das ist eine Hardwaregrenze. NOOP kann beliebig viele Zeitpläne verwalten. „Als Armband-Alarm aktivieren“ kopiert einen Weckplan in den einzigen Alarm des Armbands, denselben, den der Alarm-Bildschirm bearbeitet. Erinnerungen vibrieren am Handgelenk nur, solange NOOP auf deinem Telefon läuft — iOS pausiert Apps im Hintergrund — und planen ersatzweise eine Telefonbenachrichtigung. Ruhezeiten schalten Erinnerungen stumm, niemals den Weckalarm.",
+    "La pulsera guarda UNA alarma: es un límite de hardware. NOOP puede guardar tantos horarios como quieras. «Configurar como alarma de la pulsera» copia un horario de despertar a la única alarma de la pulsera, la misma que edita la pantalla Alarmas. Los recordatorios hacen vibrar tu muñeca solo mientras NOOP se ejecuta en el teléfono — iOS suspende las apps en segundo plano — y programan una notificación del teléfono como alternativa. Las horas de descanso silencian los recordatorios, nunca la alarma de despertar.",
+    "Le bracelet contient UNE alarme — c’est une limite matérielle. NOOP peut conserver autant de programmations que tu veux. « Activer comme alarme du bracelet » copie un horaire de réveil dans l’unique alarme du bracelet, la même que modifie l’écran Alarmes. Les rappels font vibrer ton poignet uniquement lorsque NOOP fonctionne sur ton téléphone — iOS suspend les apps en arrière-plan — et programment une notification du téléphone en secours. Les heures calmes coupent les rappels, jamais l’alarme de réveil.",
+    "Il bracciale contiene UN solo allarme: è un limite hardware. NOOP può gestire tutti gli orari che vuoi. «Imposta come allarme del bracciale» copia un orario di sveglia nell’unico allarme del bracciale, lo stesso modificato dalla schermata Allarmi. I promemoria fanno vibrare il polso solo mentre NOOP è in esecuzione sul telefono — iOS sospende le app in background — e programmano una notifica sul telefono come alternativa. Le ore di quiete silenziano i promemoria, mai l’allarme di sveglia.",
+    "Pasek przechowuje JEDEN alarm — to ograniczenie sprzętowe. NOOP może przechowywać dowolną liczbę harmonogramów. „Ustaw jako alarm paska” kopiuje harmonogram pobudki do jedynego alarmu paska, tego samego, który edytuje ekran Alarmy. Przypomnienia wibrują na nadgarstku tylko wtedy, gdy NOOP działa na telefonie — iOS wstrzymuje aplikacje w tle — i jako zabezpieczenie planują powiadomienie telefonu. Godziny ciszy wyciszają przypomnienia, ale nigdy alarm pobudki.",
+    "O bracelete guarda UM alarme — é um limite de hardware. O NOOP pode guardar tantos horários quantos quiseres. «Ativar como alarme do bracelete» copia um horário de despertar para o único alarme do bracelete, o mesmo editado no ecrã Alarmes. Os lembretes fazem o pulso vibrar apenas enquanto o NOOP está em execução no telefone — o iOS suspende apps em segundo plano — e agendam uma notificação no telefone como alternativa. As horas de silêncio silenciam os lembretes, nunca o alarme de despertar.",
+    "Браслет хранит ОДИН будильник — это аппаратное ограничение. NOOP может хранить сколько угодно расписаний. «Установить как будильник браслета» копирует расписание пробуждения в единственный будильник браслета — тот же, который редактируется на экране будильников. Напоминания вибрируют на запястье только пока NOOP работает на телефоне — iOS приостанавливает фоновые приложения — и в качестве резерва планируют уведомление телефона. Тихие часы отключают напоминания, но не будильник.",
+    "腕带只能保存一个闹钟，这是硬件限制。NOOP 可以保存任意数量的计划。“设为腕带闹钟”会把唤醒计划复制到腕带唯一的闹钟中，也就是“闹钟”页面编辑的那个。提醒仅在手机上的 NOOP 正在运行时让腕带振动——iOS 会暂停后台应用——并会安排手机通知作为备用。安静时段会静音提醒，但不会静音唤醒闹钟。",
+    "腕帶只能儲存一個鬧鐘，這是硬體限制。NOOP 可以儲存任意數量的排程。「設為腕帶鬧鐘」會把喚醒排程複製到腕帶唯一的鬧鐘中，也就是「鬧鐘」頁面編輯的那個。提醒僅在手機上的 NOOP 正在執行時讓腕帶振動——iOS 會暫停背景 App——並會安排手機通知作為備用。安靜時段會靜音提醒，但不會靜音喚醒鬧鐘。"
+])
+
+add("The strap holds ONE wake alarm. It buzzes from the strap's own firmware, even if your phone is asleep. Edit it in Alarms.", [
+    "Das Armband speichert EINEN Weckalarm. Er wird von der Firmware des Armbands selbst ausgelöst, auch wenn dein Telefon schläft. Bearbeite ihn unter Alarme.",
+    "La pulsera guarda UNA alarma de despertar. Vibra mediante el firmware de la propia pulsera, incluso si tu teléfono está inactivo. Edítala en Alarmas.",
+    "Le bracelet contient UNE alarme de réveil. Elle vibre grâce au micrologiciel du bracelet lui-même, même si ton téléphone est en veille. Modifie-la dans Alarmes.",
+    "Il bracciale contiene UN solo allarme di sveglia. Vibra tramite il firmware del bracciale stesso, anche se il telefono è in standby. Modificalo in Allarmi.",
+    "Pasek przechowuje JEDEN alarm pobudki. Wibracja jest uruchamiana przez oprogramowanie samego paska, nawet gdy telefon jest uśpiony. Edytuj go w Alarmach.",
+    "O bracelete guarda UM alarme de despertar. Vibra através do firmware do próprio bracelete, mesmo que o telefone esteja em repouso. Edita-o em Alarmes.",
+    "Браслет хранит ОДИН будильник. Вибрация запускается прошивкой самого браслета, даже если телефон спит. Изменить его можно в разделе «Будильники».",
+    "腕带只能保存一个唤醒闹钟。它由腕带自身固件触发振动，即使手机处于睡眠状态也会响。请在“闹钟”中编辑。",
+    "腕帶只能儲存一個喚醒鬧鐘。它由腕帶本身韌體觸發振動，即使手機處於睡眠狀態也會響。請在「鬧鐘」中編輯。"
+])
+
+add("The strap holds ONE wake alarm; NOOP arms it from your alarm settings and re-arms it daily.", [
+    "Das Armband speichert EINEN Weckalarm; NOOP aktiviert ihn anhand deiner Alarmeinstellungen und aktiviert ihn täglich neu.",
+    "La pulsera guarda UNA alarma de despertar; NOOP la configura desde tus ajustes de alarma y la vuelve a configurar cada día.",
+    "Le bracelet contient UNE alarme de réveil ; NOOP l’active à partir de tes réglages d’alarme et la réactive chaque jour.",
+    "Il bracciale contiene UN solo allarme di sveglia; NOOP lo configura dalle impostazioni dell’allarme e lo riconfigura ogni giorno.",
+    "Pasek przechowuje JEDEN alarm pobudki; NOOP ustawia go na podstawie ustawień alarmu i ponownie ustawia codziennie.",
+    "O bracelete guarda UM alarme de despertar; o NOOP configura-o a partir das definições de alarme e volta a configurá-lo diariamente.",
+    "Браслет хранит ОДИН будильник; NOOP настраивает его по вашим параметрам и заново устанавливает каждый день.",
+    "腕带只能保存一个唤醒闹钟；NOOP 会根据你的闹钟设置进行配置，并每天重新配置。",
+    "腕帶只能儲存一個喚醒鬧鐘；NOOP 會根據你的鬧鐘設定進行配置，並每天重新配置。"
+])
+
+add("The strap holds one wake alarm. Set it under Alarms.", [
+    "Das Armband speichert einen Weckalarm. Stelle ihn unter Alarme ein.",
+    "La pulsera guarda una alarma de despertar. Configúrala en Alarmas.",
+    "Le bracelet contient une alarme de réveil. Règle-la dans Alarmes.",
+    "Il bracciale contiene un allarme di sveglia. Impostalo in Allarmi.",
+    "Pasek przechowuje jeden alarm pobudki. Ustaw go w Alarmach.",
+    "O bracelete guarda um alarme de despertar. Define-o em Alarmes.",
+    "Браслет хранит один будильник. Настройте его в разделе «Будильники».",
+    "腕带只能保存一个唤醒闹钟。请在“闹钟”中设置。",
+    "腕帶只能儲存一個喚醒鬧鐘。請在「鬧鐘」中設定。"
+])
+
+add("The strap is coming back after a restart. This usually settles on its own.", [
+    "Das Armband verbindet sich nach einem Neustart wieder. Das stabilisiert sich normalerweise von selbst.",
+    "La pulsera está volviendo tras un reinicio. Normalmente se estabiliza por sí sola.",
+    "Le bracelet revient après un redémarrage. Cela se stabilise généralement tout seul.",
+    "Il bracciale si sta riprendendo dopo un riavvio. Di solito si stabilizza da solo.",
+    "Pasek wraca po ponownym uruchomieniu. Zwykle stabilizuje się sam.",
+    "O bracelete está a voltar após um reinício. Normalmente estabiliza sozinho.",
+    "Браслет восстанавливает соединение после перезапуска. Обычно всё стабилизируется само.",
+    "腕带正在重启后恢复连接。通常会自行稳定。",
+    "腕帶正在重新啟動後恢復連線。通常會自行穩定。"
+])
+
+add("The strap link reported a sync problem: %@", [
+    "Die Armband-Verbindung meldete ein Synchronisierungsproblem: %@",
+    "La conexión de la pulsera informó de un problema de sincronización: %@",
+    "La connexion au bracelet a signalé un problème de synchronisation : %@",
+    "La connessione al bracciale ha segnalato un problema di sincronizzazione: %@",
+    "Połączenie z paskiem zgłosiło problem z synchronizacją: %@",
+    "A ligação ao bracelete comunicou um problema de sincronização: %@",
+    "Соединение с браслетом сообщило о проблеме синхронизации: %@",
+    "腕带连接报告同步问题：%@",
+    "腕帶連線回報同步問題：%@"
+])
+
+add("Three short buzzes. The warning pattern.", [
+    "Drei kurze Vibrationen. Das Warnmuster.", "Tres vibraciones cortas. El patrón de aviso.",
+    "Trois courtes vibrations. Le motif d’alerte.", "Tre brevi vibrazioni. Lo schema di avviso.",
+    "Trzy krótkie wibracje. Wzorzec ostrzegawczy.", "Três vibrações curtas. O padrão de aviso.",
+    "Три короткие вибрации. Предупреждающий шаблон.", "三次短振动。警告模式。", "三次短振動。警告模式。"
+])
+
+add("Today layout", [
+    "Heute-Layout", "Diseño de Hoy", "Disposition Aujourd’hui", "Layout Oggi",
+    "Układ Dzisiaj", "Esquema Hoje", "Компоновка «Сегодня»", "今日布局", "今日版面"
+])
+
+add("Turn Bluetooth on in Settings to connect to your strap.", [
+    "Aktiviere Bluetooth in den Einstellungen, um dein Armband zu verbinden.",
+    "Activa Bluetooth en Ajustes para conectar tu pulsera.",
+    "Active le Bluetooth dans Réglages pour connecter ton bracelet.",
+    "Attiva il Bluetooth in Impostazioni per connettere il bracciale.",
+    "Włącz Bluetooth w Ustawieniach, aby połączyć pasek.",
+    "Ativa o Bluetooth nas Definições para ligar o bracelete.",
+    "Включите Bluetooth в настройках, чтобы подключить браслет.",
+    "请在“设置”中打开蓝牙以连接腕带。",
+    "請在「設定」中開啟藍牙以連接腕帶。"
+])
+
+add("Two short buzzes. Marks an event you asked to feel.", [
+    "Zwei kurze Vibrationen. Markiert ein Ereignis, das du spüren möchtest.",
+    "Dos vibraciones cortas. Marca un evento que pediste sentir.",
+    "Deux courtes vibrations. Marque un événement que tu as demandé à ressentir.",
+    "Due brevi vibrazioni. Segnalano un evento che hai chiesto di percepire.",
+    "Dwie krótkie wibracje. Oznaczają zdarzenie, które chcesz poczuć.",
+    "Duas vibrações curtas. Assinalam um evento que pediste para sentir.",
+    "Две короткие вибрации. Отмечают событие, которое вы хотели почувствовать.",
+    "两次短振动。标记你希望通过振动感知的事件。",
+    "兩次短振動。標記你希望透過振動感知的事件。"
+])
+
+add("WHOOP strap", [
+    "WHOOP-Armband", "Pulsera WHOOP", "Bracelet WHOOP", "Bracciale WHOOP",
+    "Pasek WHOOP", "Bracelete WHOOP", "Браслет WHOOP", "WHOOP 腕带", "WHOOP 腕帶"
+])
+
+add("Wake (long)", [
+    "Wecken (lang)", "Despertar (larga)", "Réveil (longue)", "Sveglia (lunga)",
+    "Pobudka (długa)", "Despertar (longa)", "Пробуждение (длинная)", "唤醒（长振动）", "喚醒（長振動）"
+])
+
+add("What's one thing I can do tonight to recover better?", [
+    "Was kann ich heute Abend tun, um mich besser zu erholen?",
+    "¿Qué puedo hacer esta noche para recuperarme mejor?",
+    "Quelle chose puis-je faire ce soir pour mieux récupérer ?",
+    "Qual è una cosa che posso fare stasera per recuperare meglio?",
+    "Co mogę zrobić dziś wieczorem, aby lepiej się zregenerować?",
+    "O que posso fazer esta noite para recuperar melhor?",
+    "Что я могу сделать сегодня вечером, чтобы лучше восстановиться?",
+    "今晚我可以做一件什么事来更好地恢复？",
+    "今晚我可以做一件什麼事來更好地恢復？"
+])
+
+add("When", [
+    "Wann", "Cuándo", "Quand", "Quando", "Kiedy", "Quando", "Когда", "时间", "時間"
+])
+
+add("You now", [
+    "Jetzt gerade", "Ahora mismo", "Maintenant", "Adesso", "Teraz", "Agora", "Сейчас", "现在的你", "現在的你"
+])
+
+add("Your strap is connected and live heart rate is flowing.", [
+    "Dein Armband ist verbunden und die Live-Herzfrequenz wird übertragen.",
+    "Tu pulsera está conectada y la frecuencia cardiaca en directo está llegando.",
+    "Ton bracelet est connecté et la fréquence cardiaque en direct est transmise.",
+    "Il bracciale è connesso e la frequenza cardiaca in tempo reale sta arrivando.",
+    "Pasek jest połączony i przesyła tętno na żywo.",
+    "O bracelete está ligado e a frequência cardíaca em direto está a ser transmitida.",
+    "Браслет подключён, пульс поступает в реальном времени.",
+    "腕带已连接，实时心率数据正在传输。",
+    "腕帶已連接，即時心率資料正在傳輸。"
+])
+
+add("Your strap is paired but the link is down. Reconnect, or open Devices to pair again.", [
+    "Dein Armband ist gekoppelt, aber die Verbindung ist getrennt. Stelle die Verbindung wieder her oder öffne Geräte, um erneut zu koppeln.",
+    "Tu pulsera está vinculada, pero la conexión está caída. Vuelve a conectarla o abre Dispositivos para vincularla de nuevo.",
+    "Ton bracelet est associé, mais la connexion est coupée. Reconnecte-le ou ouvre Appareils pour l’associer de nouveau.",
+    "Il bracciale è associato, ma la connessione è interrotta. Riconnettilo oppure apri Dispositivi per associarlo di nuovo.",
+    "Pasek jest sparowany, ale połączenie jest przerwane. Połącz ponownie albo otwórz Urządzenia, aby sparować go ponownie.",
+    "O bracelete está emparelhado, mas a ligação caiu. Volta a ligar ou abre Dispositivos para emparelhar novamente.",
+    "Браслет сопряжён, но соединение разорвано. Подключитесь снова или откройте «Устройства» для повторного сопряжения.",
+    "腕带已配对，但连接已断开。请重新连接，或打开“设备”再次配对。",
+    "腕帶已配對，但連線已中斷。請重新連線，或開啟「裝置」再次配對。"
+])
+
+add("as of %lld s ago", [
+    "Stand vor %lld s", "hace %lld s", "il y a %lld s", "%lld s fa",
+    "stan sprzed %lld s", "há %lld s", "%lld с назад", "%lld 秒前", "%lld 秒前"
+])
+
+add("last frame %lld s ago", [
+    "letzter Frame vor %lld s", "último fotograma hace %lld s", "dernière trame il y a %lld s",
+    "ultimo frame %lld s fa", "ostatnia ramka %lld s temu", "último fotograma há %lld s",
+    "последний кадр %lld с назад", "上一帧在 %lld 秒前", "上一幀在 %lld 秒前"
+])
+
+add("measured 14-day metrics", [
+    "gemessene 14-Tage-Metriken", "métricas medidas de 14 días", "mesures sur 14 jours",
+    "metriche misurate su 14 giorni", "zmierzone dane z 14 dni", "métricas medidas de 14 dias",
+    "измеренные показатели за 14 дней", "14 天实测指标", "14 天實測指標"
+])
+
+add("next %@", [
+    "als Nächstes %@", "siguiente %@", "prochain %@", "prossimo %@",
+    "następnie %@", "seguinte %@", "следующее %@", "下次 %@", "下次 %@"
+])
+
+add("no frame yet this session", [
+    "in dieser Sitzung noch kein Frame", "aún no hay fotogramas en esta sesión",
+    "aucune trame pour l’instant dans cette session", "nessun frame ancora in questa sessione",
+    "brak ramki w tej sesji", "ainda sem fotogramas nesta sessão",
+    "в этом сеансе ещё нет кадров", "本次会话尚无数据帧", "本次工作階段尚無資料幀"
+])
+
+add("not yet", [
+    "noch nicht", "todavía no", "pas encore", "non ancora", "jeszcze nie",
+    "ainda não", "ещё нет", "尚未", "尚未"
+])
+
+add("on-device signals", [
+    "Signale auf dem Gerät", "señales en el dispositivo", "signaux sur l’appareil",
+    "segnali sul dispositivo", "sygnały na urządzeniu", "sinais no dispositivo",
+    "сигналы на устройстве", "设备端信号", "裝置端訊號"
+])
+
+add("staged from HR only", [
+    "Schlafphasen nur aus HF", "etapas calculadas solo con FC", "stades calculés uniquement à partir de la FC",
+    "fasi calcolate solo dalla FC", "fazy wyznaczone tylko z tętna", "estágios calculados apenas com FC",
+    "стадии рассчитаны только по пульсу", "仅根据心率划分睡眠阶段", "僅根據心率劃分睡眠階段"
+])
+
+add("structured today + last night", [
+    "strukturierte Daten für heute + letzte Nacht", "datos estructurados de hoy + anoche",
+    "données structurées d’aujourd’hui + de la nuit dernière", "dati strutturati di oggi + della scorsa notte",
+    "ustrukturyzowane dane z dziś + ostatniej nocy", "dados estruturados de hoje + da noite passada",
+    "структурированные данные за сегодня + прошлую ночь", "今天 + 昨晚的结构化数据", "今天 + 昨晚的結構化資料"
+])
+
 text = CATALOG.read_text(encoding="utf-8")
 catalog = json.loads(text)
 pending = [(key, value) for key, value in ENTRIES.items() if key not in catalog.get("strings", {})]
