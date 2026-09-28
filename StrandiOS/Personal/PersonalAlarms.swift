@@ -253,7 +253,8 @@ struct PersonalAlarmsView: View {
     /// What the strap is actually armed with — resolved through the same pure function the arm
     /// path uses, so this card cannot disagree with what the strap was told.
     private var strapNext: Date? {
-        guard behavior.smartAlarmEnabled else { return nil }
+        guard behavior.smartAlarmEnabled,
+              !(model.whoop5Detected && !PuffinExperiment.isEnabled) else { return nil }
         return AppModel.nextSmartAlarmDate(minutes: behavior.smartAlarmMinutes,
                                            weekdays: behavior.smartAlarmWeekdays,
                                            overrides: WindDownNudge.perDayWakeOverrides)
@@ -594,7 +595,7 @@ private struct ScheduleEditorView: View {
         saved.weekdays = oneOff ? [] : weekdays
         saved.oneOffDay = oneOff ? oneOffDay : nil
         saved.pattern = pattern
-        saved.enabled = true
+        saved.enabled = draft.enabled
         onSave(saved)
         dismiss()
     }

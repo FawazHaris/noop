@@ -265,7 +265,8 @@ struct WristView: View {
     /// What the strap is actually armed with, resolved through the same pure function the arm path
     /// uses — never a second derivation of the same fact.
     private var nextAlarm: Date? {
-        guard behavior.smartAlarmEnabled else { return nil }
+        guard behavior.smartAlarmEnabled,
+              !(model.whoop5Detected && !PuffinExperiment.isEnabled) else { return nil }
         return AppModel.nextSmartAlarmDate(minutes: behavior.smartAlarmMinutes,
                                            weekdays: behavior.smartAlarmWeekdays,
                                            overrides: WindDownNudge.perDayWakeOverrides)
@@ -415,6 +416,7 @@ struct GuardianStatusBanner: View {
         switch action {
         case .reconnect:   return String(localized: "Reconnect strap")
         case .refresh:     return String(localized: "Refresh data")
+        case .sync:        return String(localized: "Sync strap")
         case .openDevices: return String(localized: "Open Devices")
         }
     }
@@ -424,6 +426,7 @@ struct GuardianStatusBanner: View {
         switch action {
         case .reconnect:   model.ble.connect()
         case .refresh:     Task { await model.repo.refresh() }
+        case .sync:        model.ble.syncNow()
         case .openDevices: router.openDevices()
         }
     }

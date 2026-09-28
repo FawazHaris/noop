@@ -37,6 +37,8 @@ enum GuardianAction {
     case reconnect
     /// Re-read the local caches (`Repository.refresh()`).
     case refresh
+    /// Ask the existing BLE sync engine for a history offload (`BLEManager.syncNow()`).
+    case sync
     /// Open the Devices manager (`NavRouter.openDevices()`).
     case openDevices
 }
@@ -45,6 +47,9 @@ enum GuardianAction {
 enum GuardianState: Equatable {
     /// Connected with a live heart-rate sample that arrived recently.
     case healthyStream
+    /// Connected and live HR may be available, but there is no encrypted pairing, so pairing-gated
+    /// features (buzzes, alarms, history sync) are unavailable.
+    case unpairedLive
     /// Connected, but no readable live sample for a while (`secondsSinceFrame` = age of the last
     /// routed frame; nil when no frame arrived this session at all).
     case staleHr(secondsSinceFrame: Int?)
@@ -67,6 +72,7 @@ enum GuardianState: Equatable {
     var shortLabel: String {
         switch self {
         case .healthyStream:          return String(localized: "Streaming")
+        case .unpairedLive:            return String(localized: "Live HR (not fully paired)")
         case .staleHr:                return String(localized: "Connected, no live reading")
         case .staleSync:              return String(localized: "Sync due")
         case .connecting:             return String(localized: "Reconnecting…")
@@ -80,6 +86,7 @@ enum GuardianState: Equatable {
     var title: String {
         switch self {
         case .healthyStream:          return String(localized: "Live and streaming")
+        case .unpairedLive:            return String(localized: "Live HR (not fully paired)")
         case .staleHr:                return String(localized: "Connected, but no live heart rate")
         case .staleSync(let h, let message):
             if let message, !message.isEmpty { return message }
@@ -97,6 +104,8 @@ enum GuardianState: Equatable {
         switch self {
         case .healthyStream:
             return String(localized: "Your strap is connected and live heart rate is flowing.")
+        case .unpairedLive:
+            return String(localized: "Live HR works. Free the strap to unlock buzz, alarms & sync")
         case .staleHr(let seconds):
             if let seconds {
                 return String(localized: "The link is up, but no readable sample has arrived for about \(seconds) s. Reconnect usually clears this.")
@@ -125,7 +134,7 @@ enum GuardianState: Equatable {
         switch self {
         case .healthyStream: return .healthy
         case .connecting:    return .info
-        case .staleHr, .staleSync, .bondedIdle: return .attention
+        case .unpairedLive, .staleHr, .staleSync, .bondedIdle: return .attention
         case .disconnected, .bluetoothUnavailable: return .warning
         }
     }
@@ -133,8 +142,9 @@ enum GuardianState: Equatable {
     var actions: [GuardianAction] {
         switch self {
         case .healthyStream:          return []
+        case .unpairedLive:            return [.openDevices]
         case .staleHr:                return [.reconnect, .openDevices]
-        case .staleSync:              return [.refresh]
+        case .staleSync:              return [.sync]
         case .connecting:             return [.refresh]
         case .bondedIdle:             return [.reconnect, .openDevices]
         case .disconnected:           return [.reconnect, .openDevices]
@@ -204,6 +214,9 @@ enum ConnectionGuardian {
         if !s.connected {
             return (s.encryptedBond || s.bonded) ? .bondedIdle : .disconnected
         }
+        // A connected standard-HR link without the encrypted bond is useful for live HR, but it is
+        // deliberately not healthy: every pairing-gated feature is unavailable.
+        if !s.encryptedBond { return .unpairedLive }
         // Connected: a surfaced sync problem beats a staleness estimate (it is attributed, the
         // estimate is derived). A sync in progress is NOT a problem — it is the fix running.
         if !s.backfilling, let err = s.lastSyncError, !err.isEmpty {
