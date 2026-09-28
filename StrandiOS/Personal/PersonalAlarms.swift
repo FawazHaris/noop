@@ -32,6 +32,8 @@ struct PersonalAlarmSchedule: Codable, Identifiable, Equatable {
         /// An app-side reminder (haptic + notification fallback).
         case reminder
 
+        var id: String { rawValue }
+
         var label: String {
             switch self {
             case .wake:     return String(localized: "Wake")

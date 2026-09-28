@@ -1,6 +1,7 @@
 #if os(iOS)
 import SwiftUI
 import StrandDesign
+import WhoopStore
 
 // MARK: - Personal Today (personal fork V1)
 //
