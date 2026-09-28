@@ -358,8 +358,14 @@ struct PersonalAlarmsView: View {
                     .buttonStyle(NoopButtonStyle(.secondary, fullWidth: true))
                     .disabled(schedule.oneOffDay != nil)
                     .accessibilityHint(schedule.oneOffDay != nil
-                        ? Text("One-off wakes stay app-side because the strap alarm repeats by weekday.")
+                        ? Text("One-off wake schedules cannot be armed because the strap alarm supports repeating weekdays only.")
                         : Text(""))
+                    if schedule.oneOffDay != nil {
+                        Text("One-off wake schedules cannot be armed on the strap because its alarm supports repeating weekdays only. Choose a repeating wake schedule, or use a one-off reminder for a phone notification.")
+                            .font(StrandFont.caption)
+                            .foregroundStyle(StrandPalette.textTertiary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 Button {
                     editorDraft = schedule
@@ -529,6 +535,12 @@ private struct ScheduleEditorView: View {
                 if oneOff {
                     DatePicker("Day", selection: $oneOffDay, displayedComponents: .date)
                         .datePickerStyle(.compact)
+                    if kind == .wake {
+                        Text("The strap cannot hold an exact-date alarm. This wake schedule will stay unarmed; choose a repeating wake schedule or a one-off reminder instead.")
+                            .font(StrandFont.caption)
+                            .foregroundStyle(StrandPalette.textTertiary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 } else {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(spacing: 6) {

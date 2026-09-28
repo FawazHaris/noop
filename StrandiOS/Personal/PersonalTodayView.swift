@@ -37,8 +37,20 @@ struct PersonalTodayView: View {
     private var displayDay: DailyMetric? { repo.today }
     /// Recovery uses the same scored-day anchor as the widget/watch/Live Activity surfaces.
     private var recoveryDay: DailyMetric? { Repository.widgetAnchor(days: repo.days) }
-    /// Overnight vitals carry independently of recovery, exactly like classic Today.
+    /// Overnight-vitals fallback used by the Last Night section.
     private var vitalsDay: DailyMetric? { Repository.lastVitalsDay(days: repo.days) }
+    /// Each Today vital resolves independently so a newer HRV-only row cannot hide an older RHR.
+    private var todayKey: String {
+        max(Repository.logicalDayKey(Date()), Repository.localDayKey(Date()))
+    }
+    private var hrvDay: DailyMetric? {
+        if displayDay?.avgHrv != nil { return displayDay }
+        return Repository.lastHrvDay(days: repo.days, todayKey: todayKey)
+    }
+    private var rhrDay: DailyMetric? {
+        if displayDay?.restingHr != nil { return displayDay }
+        return Repository.lastRestingHrDay(days: repo.days, todayKey: todayKey)
+    }
 
     var body: some View {
         ScreenScaffold(title: nil, onRefresh: { await repo.refresh() }) {
@@ -134,11 +146,10 @@ struct PersonalTodayView: View {
             .map { String(format: "%.1f", $0) } ?? "—"
     }
     private var hrvText: String {
-        value(displayDay?.avgHrv, fallback: vitalsDay?.avgHrv) { "\(Int($0.rounded())) ms" } ?? "—"
+        hrvDay?.avgHrv.map { "\(Int($0.rounded())) ms" } ?? "—"
     }
     private var rhrText: String {
-        value(displayDay?.restingHr.map(Double.init),
-              fallback: vitalsDay?.restingHr.map(Double.init)) { "\(Int($0.rounded())) bpm" } ?? "—"
+        rhrDay?.restingHr.map { "\($0) bpm" } ?? "—"
     }
 
     /// Provenance is attached to the value that actually fell back, never inferred from row existence.
@@ -147,19 +158,12 @@ struct PersonalTodayView: View {
         return recoveryDay?.day
     }
     private var hrvProvenance: String? {
-        guard displayDay?.avgHrv == nil, vitalsDay?.avgHrv != nil else { return nil }
-        return vitalsDay?.day
+        guard displayDay?.avgHrv == nil, hrvDay?.avgHrv != nil else { return nil }
+        return hrvDay?.day
     }
     private var rhrProvenance: String? {
-        guard displayDay?.restingHr == nil, vitalsDay?.restingHr != nil else { return nil }
-        return vitalsDay?.day
-    }
-
-    /// Today-first with an honest fallback to the last vitals day.
-    private func value<T>(_ today: T?, fallback: T?, format: (T) -> String) -> String? {
-        if let today { return format(today) }
-        if let fallback { return format(fallback) }
-        return nil
+        guard displayDay?.restingHr == nil, rhrDay?.restingHr != nil else { return nil }
+        return rhrDay?.day
     }
 
     private func glanceTile(label: LocalizedStringKey, value: String,

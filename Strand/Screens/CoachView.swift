@@ -423,7 +423,7 @@ struct CoachView: View {
         if coach.includeOnDeviceSignals {
             parts.append(String(localized: "on-device signals"))
         }
-        return String(localized: "Attached: ") + parts.joined(separator: ", ")
+        return String(localized: "Attached: \(parts.joined(separator: ", "))")
     }
 
     private var connectedHeader: some View {
