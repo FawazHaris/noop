@@ -30,6 +30,7 @@ final class WristHapticScheduler {
 
     /// In-flight foreground timer work, keyed by the schedule id so re-scheduling replaces cleanly.
     private var workItems: [UUID: DispatchWorkItem] = [:]
+    private static var fallbackRevisions = NotificationFallbackRevisions()
 
     private init() {}
 
@@ -63,11 +64,11 @@ final class WristHapticScheduler {
     // MARK: Fire now
 
     /// Fire a reminder pattern now, applying the fork's policy gates: the HapticPrefs reminder
-    /// gate (default ON) and quiet hours. Wake-class patterns bypass quiet hours — a wake the
-    /// window silenced would be a wake that lied.
+    /// gate (default ON) and quiet hours. A long/wake-style reminder is still an app reminder;
+    /// only the separate firmware wake alarm bypasses quiet hours.
     func fireReminder(_ pattern: PersonalHapticPattern, on model: AppModel, now: Date = Date()) {
         guard HapticPrefs.enabled(PersonalHapticPattern.reminderGateKey) else { return }
-        if pattern != .wake, Self.inQuietHours(now) { return }
+        if Self.inQuietHours(now) { return }
         pattern.fire(on: model)
     }
 
@@ -119,55 +120,58 @@ final class WristHapticScheduler {
                                              oneOffDay: Date?,
                                              next: Date) {
         let center = UNUserNotificationCenter.current()
+        let revision = fallbackRevisions.begin(id: id)
+        // Clear every previous shape even when authorization has since been revoked.
+        let ownedIds = [id] + (1...7).map { "\(id)-w\($0)" }
+        center.removePendingNotificationRequests(withIdentifiers: ownedIds)
         center.getNotificationSettings { settings in
-            guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else {
-                return
-            }
-            let content = UNMutableNotificationContent()
-            content.title = title
-            content.body = body
+            let authorized = settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional
+            Task { @MainActor in
+                // Edits and cancellation invalidate older asynchronous authorization completions.
+                // All add/remove calls are serialized here, never issued by an off-main callback.
+                guard fallbackRevisions.isCurrent(id: id, revision: revision), authorized else { return }
+                let content = UNMutableNotificationContent()
+                content.title = title
+                content.body = body
 
-            // Replace every shape this schedule may previously have used. Do it directly inside
-            // this notification-center callback rather than hopping through the @MainActor helper.
-            let ownedIds = [id] + (1...7).map { "\(id)-w\($0)" }
-            center.removePendingNotificationRequests(withIdentifiers: ownedIds)
+                if oneOffDay != nil {
+                    let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute],
+                                                                     from: next)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                    center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+                    return
+                }
 
-            if oneOffDay != nil {
-                let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute],
-                                                                 from: next)
-                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-                center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
-                return
-            }
+                let hour = minuteOfDay / 60
+                let minute = minuteOfDay % 60
+                let validWeekdays = weekdays.filter { (1...7).contains($0) }
 
-            let hour = minuteOfDay / 60
-            let minute = minuteOfDay % 60
-            let validWeekdays = weekdays.filter { (1...7).contains($0) }
+                if weekdays.isEmpty {
+                    var components = DateComponents()
+                    components.hour = hour
+                    components.minute = minute
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                    center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+                    return
+                }
 
-            if weekdays.isEmpty {
-                var components = DateComponents()
-                components.hour = hour
-                components.minute = minute
-                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-                center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
-                return
-            }
-
-            for weekday in validWeekdays {
-                var components = DateComponents()
-                components.weekday = weekday
-                components.hour = hour
-                components.minute = minute
-                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
-                center.add(UNNotificationRequest(identifier: "\(id)-w\(weekday)",
-                                                 content: content,
-                                                 trigger: trigger))
+                for weekday in validWeekdays {
+                    var components = DateComponents()
+                    components.weekday = weekday
+                    components.hour = hour
+                    components.minute = minute
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                    center.add(UNNotificationRequest(identifier: "\(id)-w\(weekday)",
+                                                     content: content,
+                                                     trigger: trigger))
+                }
             }
         }
     }
 
     /// Remove every pending request shape a schedule can own (one-off/daily base id + weekly ids).
     static func cancelNotificationFallback(id: String) {
+        fallbackRevisions.cancel(id: id)
         let ids = [id] + (1...7).map { "\(id)-w\($0)" }
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
     }

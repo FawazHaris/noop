@@ -16,6 +16,13 @@ import WhoopStore
 /// Builds the structured coach context block from cached daily metrics.
 enum CoachContextBuilder {
 
+    /// Shared with Personal Today: today's banked sleep wins even without vitals. Resolve the
+    /// canonical prior-vitals fallback only when today's row has no sleep.
+    static func lastNightDay(today: DailyMetric?, fallback: @autoclosure () -> DailyMetric?) -> DailyMetric? {
+        if let today, today.totalSleepMin != nil { return today }
+        return fallback()
+    }
+
     /// The structured block, or an empty string when there is nothing to summarise (the day-line
     /// summary in `buildContext()` already covers the no-data case; this never duplicates it).
     static func structuredBlock(days: [DailyMetric],
@@ -47,8 +54,14 @@ enum CoachContextBuilder {
 
         // 7-DAY TRENDS — this week vs the week before, stated as deviations from the user's own
         // baseline. Never a bare number without its reference.
-        let recent = Array(days.suffix(7))
-        let prior = Array(days.suffix(14).dropLast(7))
+        // Calendar windows, not row counts: sparse history must not call a months-old row
+        // "last week", and future-dated imports must not leak into today's comparison.
+        let calendar = Calendar.current
+        let end = dayKey(now)
+        let recentStart = dayKey(calendar.date(byAdding: .day, value: -6, to: now) ?? now)
+        let priorStart = dayKey(calendar.date(byAdding: .day, value: -13, to: now) ?? now)
+        let recent = days.filter { $0.day >= recentStart && $0.day <= end }
+        let prior = days.filter { $0.day >= priorStart && $0.day < recentStart }
         lines.append("7-day trends (vs the prior 7 days):")
         lines.append("  " + trend(recent: recent, prior: prior, label: "charge",
                                    value: { $0.recovery }, format: { "\(Int($0.rounded()))" }, unit: "/100"))

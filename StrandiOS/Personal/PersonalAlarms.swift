@@ -160,17 +160,24 @@ final class PersonalAlarmStore: ObservableObject {
         behavior.smartAlarmEnabled = true
         behavior.smartAlarmMinutes = schedule.minuteOfDay
         behavior.smartAlarmWeekdays = schedule.weekdays
+        // This schedule specifies one time for every selected day. Inherited overrides would
+        // silently arm a different time; clear them through the existing settings API.
+        for weekday in WindDownNudge.perDayWakeOverrides.keys {
+            WindDownNudge.setWakeOverride(weekday: weekday, minutes: nil)
+        }
         model.applySmartAlarm()
     }
 
     // MARK: Foreground reminder poller
 
-    /// Attach the model and start the poller. Called when the schedules screen appears; the timer
+    /// Attach the model and reconcile reminders on launch / foreground; the timer
     /// lives as long as the process does (iOS suspends it with the app — the documented limit).
     /// The block hops to the main actor exactly the way `AppModel.scheduleDailySmartAlarmRearm`'s
     /// timer does.
     func attach(model: AppModel) {
         self.model = model
+        refreshNotificationFallbacks()
+        poll()
         guard pollTimer == nil else { return }
         let timer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.poll() }
@@ -180,7 +187,7 @@ final class PersonalAlarmStore: ObservableObject {
     }
 
     private func poll() {
-        guard let model else { return }
+        guard let model, model.live.connected, model.live.encryptedBond else { return }
         let now = Date()
         let windowStart = now.addingTimeInterval(-120)
         for schedule in schedules where schedule.enabled && schedule.kind == .reminder {
@@ -192,7 +199,7 @@ final class PersonalAlarmStore: ObservableObject {
             let stamp = "\(Int(fire.timeIntervalSince1970))"
             if UserDefaults.standard.string(forKey: stampKey) == stamp { continue }
             UserDefaults.standard.set(stamp, forKey: stampKey)
-            WristHapticScheduler.shared.fireReminder(schedule.pattern, on: model, now: now)
+            WristHapticScheduler.shared.fireReminder(schedule.pattern, on: model, now: fire)
         }
     }
 

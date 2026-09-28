@@ -37,8 +37,6 @@ struct PersonalTodayView: View {
     private var displayDay: DailyMetric? { repo.today }
     /// Recovery uses the same scored-day anchor as the widget/watch/Live Activity surfaces.
     private var recoveryDay: DailyMetric? { Repository.widgetAnchor(days: repo.days) }
-    /// Overnight-vitals fallback used by the Last Night section.
-    private var vitalsDay: DailyMetric? { Repository.lastVitalsDay(days: repo.days) }
     /// Each Today vital resolves independently so a newer HRV-only row cannot hide an older RHR.
     private var todayKey: String {
         max(Repository.logicalDayKey(Date()), Repository.localDayKey(Date()))
@@ -213,7 +211,8 @@ struct PersonalTodayView: View {
     /// The night the LAST NIGHT tiles describe: today's row when it has a banked night, else the
     /// last vitals day. One resolver, so the tiles and the caption cannot disagree.
     private var lastNightRow: DailyMetric? {
-        Repository.lastNightDay(today: displayDay, days: repo.days)
+        CoachContextBuilder.lastNightDay(today: displayDay,
+            fallback: Repository.lastVitalsDay(days: repo.days))
     }
 
     private var sleepDurationText: String {
@@ -261,9 +260,7 @@ struct PersonalTodayView: View {
                     QuickSyncButton()
                 }
                 HStack(spacing: NoopMetrics.gap) {
-                    quickButton("Buzz strap", icon: "waveform.path", tint: StrandPalette.metricRose) {
-                        model.buzzStrapOnce()
-                    }
+                    QuickBuzzButton()
                     quickButton("Alarms", icon: "alarm.fill", tint: StrandPalette.restColor) {
                         router.openAlarms()
                     }
@@ -479,6 +476,20 @@ private struct NextAlarmCard: View {
 }
 
 // MARK: - Sync quick button (leaf: observes LiveState for the gate + progress)
+
+/// Shares Wrist's encrypted-command gate; a live-HR-only connection cannot buzz.
+private struct QuickBuzzButton: View {
+    @EnvironmentObject private var live: LiveState
+    @EnvironmentObject private var model: AppModel
+
+    var body: some View {
+        NoopButton("Buzz strap", systemImage: "waveform.path",
+                   kind: .secondary, fullWidth: true) {
+            model.buzzStrapOnce()
+        }
+        .disabled(!live.connected || !live.encryptedBond)
+    }
+}
 
 /// The Sync action, gated exactly like HealthView's "Sync now" (connected + bonded +
 /// historyReady + not already syncing), showing the honest in-progress state while it runs.

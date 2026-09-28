@@ -33,7 +33,9 @@ the "What should happen" line is fully true.
 ## 3. Pair / connect the strap
 
 - **Tap:** the guardian banner's **Reconnect strap** (or Open Devices → pair flow).
-- **What should happen:** the banner clears within a few seconds of bonding; the "You now" card
+- **What should happen:** an encrypted bond enables buzz/history commands. Before the first
+  completed history sync the guardian still says **Sync due**, even while HR streams; it clears
+  after a successful sync (or stays informational while backfilling). The "You now" card
   shows a live bpm and an "as of Ns ago" line that stays under ~15 s while worn.
 - **If it fails:** capture the strap log (Developer Lab → Test Centre → Export) — it carries the
   connect/bond trace.
@@ -78,6 +80,9 @@ the "What should happen" line is fully true.
 - **What should happen:** "On the strap" on the schedules screen and the Alarms screen agree on
   the same next buzz; at the chosen time the strap buzzes on your wrist (phone can be asleep).
   Disarm afterwards in Alarms.
+- Also leave Today visible across the occurrence: its countdown AND timestamp must advance to
+  the next selected weekday. Existing per-day overrides must not change a newly copied schedule's
+  time. Try Wake + One specific day: Save must be disabled with the repeating-wake/reminder explanation.
 - **If it fails:** note the two times shown on each screen (if they disagree, that is the bug) and
   whether the strap buzzed.
 
@@ -89,6 +94,10 @@ the "What should happen" line is fully true.
   default) while NOOP is alive; a phone notification appears if notifications are authorized.
   Backgrounding NOOP before the time = no wrist buzz (iOS suspension) — that is the documented
   limit, the notification fallback covers it.
+- Repeat after relaunch without opening Alarm schedules. Test a repeating reminder across two
+  occurrences. Edit daily → selected weekdays → one-off, then disable/delete; no old request may
+  fire. Also test rapid edit/delete while permission is being checked, and granting permission in
+  iOS Settings then reopening NOOP.
 - **If it fails:** note whether NOOP was foregrounded and whether a notification arrived.
 
 ## 9. Background & reopen

@@ -32,9 +32,10 @@
 
 ## Build status
 
-- **Local:** not possible — this workspace is Linux, no Swift toolchain, no Xcode (stop-condition C
-  in the shared worklog). Every symbol referenced in the new code was verified by reading the
-  actual repo source (see the verified-symbol list in the worklog, Task 3 entry).
+- **Local (2026-09-28):** macOS with Swift command-line tools, but no full Xcode/XCTest installation.
+  Swift source parsing, focused headless resolver checks, Source Hygiene, the exact i18n audit,
+  153 core Python tests and 234 capture tests are locally validated. App builds and StrandTests
+  require the Xcode-backed GitHub runners; see PR #2's current checks for their live result.
 - **CI:** `app-build.yml` will run on push of this branch's commits to `main` (or via the PR /
   dispatch paths). Matrix: `Strand` on macos-15 (universal + **runs StrandTests**) and `NOOPiOS` on
   macos-26 (iOS 26 SDK, compile-only). `swift-packages.yml` also runs on push (path-filtered).
@@ -43,10 +44,9 @@
 
 ## Test status
 
-- `StrandTests` (app-target logic tests) run via the `Strand` leg of `app-build.yml` on push. No
-  new tests were added in V1 (the new code is UI composition + small pure helpers; the pure helpers
-  — `ConnectionGuardian.resolve`, `CoachContextBuilder.structuredBlock`,
-  `WristHapticScheduler.inQuietHours` — are structured to be trivially testable in a follow-up).
+- `StrandTests` run via the macOS leg of `app-build.yml` for PR #2. New regression tests cover
+  Guardian sync/pairing/backfill priority, banked Last Night sleep and sparse-history trend windows,
+  and delayed notification callbacks after edit/cancel/re-enable.
 - Package suites run via `swift-packages.yml` (no packages were modified — no package-level risk).
 
 ## Known blockers

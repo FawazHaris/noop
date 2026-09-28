@@ -13,7 +13,7 @@ final class PersonalLastNightResolverTests: XCTestCase {
     func testBankedSleepWithoutVitalsWinsOverPriorVitals() {
         let today = row("2026-09-28", sleep: 450)
         let prior = row("2026-09-27", sleep: 390, hrv: 62)
-        let resolved = Repository.lastNightDay(today: today, days: [prior, today])
+        let resolved = CoachContextBuilder.lastNightDay(today: today, fallback: prior)
         XCTAssertEqual(resolved?.day, today.day)
         XCTAssertEqual(resolved?.totalSleepMin, 450)
         XCTAssertNil(resolved?.avgHrv)
@@ -25,14 +25,23 @@ final class PersonalLastNightResolverTests: XCTestCase {
     func testMissingBankedSleepFallsBackToLastVitals() {
         let today = row("2026-09-28")
         let prior = row("2026-09-27", sleep: 390, hrv: 62)
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = .current
-        let now = calendar.date(from: DateComponents(year: 2026, month: 9, day: 28, hour: 12))!
-        XCTAssertEqual(Repository.lastNightDay(today: today, days: [prior, today], now: now)?.day,
+        XCTAssertEqual(CoachContextBuilder.lastNightDay(today: today, fallback: prior)?.day,
                        prior.day)
     }
 
     func testNoSleepAndNoPriorVitalsStaysEmpty() {
-        XCTAssertNil(Repository.lastNightDay(today: nil, days: []))
+        XCTAssertNil(CoachContextBuilder.lastNightDay(today: nil, fallback: nil))
+    }
+
+    func testTrendWindowsExcludeOldAndFutureRowsInsteadOfCountingRows() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        let now = calendar.date(from: DateComponents(year: 2026, month: 9, day: 28, hour: 12))!
+        let prior = row("2026-09-16", sleep: 360)
+        let today = row("2026-09-28", sleep: 480)
+        let context = CoachContextBuilder.structuredBlock(
+            days: [row("2026-08-01", sleep: 60), prior, today, row("2026-10-01", sleep: 900)],
+            today: today, lastNight: today, now: now)
+        XCTAssertTrue(context.contains("sleep 8.0h (baseline 6.0, +2.0h)"), context)
     }
 }
