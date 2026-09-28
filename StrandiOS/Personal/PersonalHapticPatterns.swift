@@ -71,12 +71,14 @@ enum PersonalHapticPattern: String, CaseIterable, Identifiable, Codable {
     /// Fire this pattern through the proven graduated-buzz path (the ambient-cue form, ungated —
     /// gating is the scheduler's policy). No-op on an unbonded link: the command characteristic is
     /// bond-gated, exactly like every other scheduled cue.
+    @MainActor
     func fire(on model: AppModel) {
         model.buzz(loops: loops)
     }
 
     /// The user-facing "test this pattern" path — the acked one-shot sequence, matching every other
     /// user-facing buzz button.
+    @MainActor
     func testFire(on model: AppModel) {
         model.buzzStrapOnce()
     }
