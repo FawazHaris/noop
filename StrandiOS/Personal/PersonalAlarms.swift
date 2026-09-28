@@ -147,7 +147,9 @@ final class PersonalAlarmStore: ObservableObject {
     func armAsStrapAlarm(_ schedule: PersonalAlarmSchedule,
                          behavior: BehaviorStore,
                          model: AppModel) {
-        guard schedule.kind == .wake else { return }
+        // A one-off date cannot be represented by the strap's recurring weekday alarm fields.
+        // Refuse the copy rather than turning an exact-date wake into an accidental daily alarm.
+        guard schedule.kind == .wake, schedule.oneOffDay == nil else { return }
         behavior.smartAlarmEnabled = true
         behavior.smartAlarmMinutes = schedule.minuteOfDay
         behavior.smartAlarmWeekdays = schedule.weekdays
@@ -173,11 +175,12 @@ final class PersonalAlarmStore: ObservableObject {
     private func poll() {
         guard let model else { return }
         let now = Date()
+        let windowStart = now.addingTimeInterval(-120)
         for schedule in schedules where schedule.enabled && schedule.kind == .reminder {
-            guard let fire = schedule.nextOccurrence(from: now) else { continue }
-            let secondsUntil = fire.timeIntervalSince(now)
-            // Fire inside a ±grace window around the occurrence, once per occurrence.
-            guard secondsUntil <= 0, now.timeIntervalSince(fire) < 120 else { continue }
+            // nextOccurrence is strictly-future. Resolve from the start of the grace window so the
+            // occurrence that just elapsed is visible to the poller, including elapsed one-offs.
+            guard let fire = schedule.nextOccurrence(from: windowStart),
+                  fire <= now else { continue }
             let stampKey = Self.firedStampPrefix + schedule.id.uuidString
             let stamp = "\(Int(fire.timeIntervalSince1970))"
             if UserDefaults.standard.string(forKey: stampKey) == stamp { continue }
@@ -203,7 +206,10 @@ final class PersonalAlarmStore: ObservableObject {
                 id: id,
                 title: schedule.label.isEmpty ? String(localized: "Reminder") : schedule.label,
                 body: String(localized: "Scheduled reminder from NOOP. Open the app to sync and feel it on your wrist."),
-                at: next)
+                minuteOfDay: schedule.minuteOfDay,
+                weekdays: schedule.weekdays,
+                oneOffDay: schedule.oneOffDay,
+                next: next)
         }
     }
 
@@ -350,6 +356,10 @@ struct PersonalAlarmsView: View {
                         Text("Arm as strap alarm")
                     }
                     .buttonStyle(NoopButtonStyle(.secondary, fullWidth: true))
+                    .disabled(schedule.oneOffDay != nil)
+                    .accessibilityHint(schedule.oneOffDay != nil
+                        ? Text("One-off wakes stay app-side because the strap alarm repeats by weekday.")
+                        : Text(""))
                 }
                 Button {
                     editorDraft = schedule

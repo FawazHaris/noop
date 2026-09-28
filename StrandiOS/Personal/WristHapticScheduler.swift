@@ -114,7 +114,10 @@ final class WristHapticScheduler {
     static func scheduleNotificationFallback(id: String,
                                              title: String,
                                              body: String,
-                                             at date: Date) {
+                                             minuteOfDay: Int,
+                                             weekdays: Set<Int>,
+                                             oneOffDay: Date?,
+                                             next: Date) {
         let center = UNUserNotificationCenter.current()
         center.getNotificationSettings { settings in
             guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else {
@@ -123,16 +126,48 @@ final class WristHapticScheduler {
             let content = UNMutableNotificationContent()
             content.title = title
             content.body = body
-            let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute],
-                                                             from: date)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-            center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+
+            // Replace every shape this schedule may previously have used.
+            cancelNotificationFallback(id: id)
+
+            if oneOffDay != nil {
+                let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute],
+                                                                 from: next)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+                return
+            }
+
+            let hour = minuteOfDay / 60
+            let minute = minuteOfDay % 60
+            let validWeekdays = weekdays.filter { (1...7).contains($0) }
+
+            if weekdays.isEmpty {
+                var components = DateComponents()
+                components.hour = hour
+                components.minute = minute
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                center.add(UNNotificationRequest(identifier: id, content: content, trigger: trigger))
+                return
+            }
+
+            for weekday in validWeekdays {
+                var components = DateComponents()
+                components.weekday = weekday
+                components.hour = hour
+                components.minute = minute
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                center.add(UNNotificationRequest(identifier: "\(id)-w\(weekday)",
+                                                 content: content,
+                                                 trigger: trigger))
+            }
         }
     }
 
-    /// Remove a previously scheduled fallback notification.
+    /// Remove every pending request shape a schedule can own (one-off/daily base id + weekly ids).
     static func cancelNotificationFallback(id: String) {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
+        let ids = [id] + (1...7).map { "\(id)-w\($0)" }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
     }
 }
 #endif

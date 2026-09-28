@@ -1,6 +1,7 @@
 #if os(iOS)
 import SwiftUI
 import StrandDesign
+import StrandAnalytics
 import WhoopStore
 
 // MARK: - Personal Today (personal fork V1)
@@ -34,8 +35,9 @@ struct PersonalTodayView: View {
 
     /// Today's row, by the device's logical day — the same resolver the classic Today uses.
     private var displayDay: DailyMetric? { repo.today }
-    /// The freshest strictly-prior row with overnight vitals, for the honest "still yesterday's
-    /// numbers" carry-over when today hasn't scored yet.
+    /// Recovery uses the same scored-day anchor as the widget/watch/Live Activity surfaces.
+    private var recoveryDay: DailyMetric? { Repository.widgetAnchor(days: repo.days) }
+    /// Overnight vitals carry independently of recovery, exactly like classic Today.
     private var vitalsDay: DailyMetric? { Repository.lastVitalsDay(days: repo.days) }
 
     var body: some View {
@@ -103,36 +105,33 @@ struct PersonalTodayView: View {
     /// vitals day and says so — never a bare blank pretending nothing exists.
     private var todaySection: some View {
         VStack(alignment: .leading, spacing: NoopMetrics.gap) {
-            SectionHeader("Today", overline: "Your day so far",
-                          trailing: carryCaption)
+            SectionHeader("Today", overline: "Your day so far")
             NoopCard(padding: NoopMetrics.cardPadding) {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: NoopMetrics.gap),
                                     GridItem(.flexible(), spacing: NoopMetrics.gap)],
                           spacing: NoopMetrics.gap) {
                     glanceTile(label: "Recovery", value: recoveryText,
+                               provenance: recoveryProvenance,
                                tint: StrandPalette.chargeColor)
                     glanceTile(label: "Strain", value: strainText,
                                tint: StrandPalette.effortColor)
                     glanceTile(label: "HRV", value: hrvText,
+                               provenance: hrvProvenance,
                                tint: StrandPalette.restColor)
                     glanceTile(label: "Resting HR", value: rhrText,
+                               provenance: rhrProvenance,
                                tint: StrandPalette.restBright)
                 }
             }
         }
     }
 
-    /// "yesterday" when the tiles are reading the prior day's numbers (today's row not scored yet).
-    private var carryCaption: String? {
-        guard displayDay == nil, vitalsDay != nil else { return nil }
-        return String(localized: "yesterday")
-    }
-
     private var recoveryText: String {
-        value(displayDay?.recovery, fallback: vitalsDay?.recovery) { "\(Int($0.rounded()))" } ?? "—"
+        recoveryDay?.recovery.map { "\(Int($0.rounded()))" } ?? "—"
     }
     private var strainText: String {
-        value(displayDay?.strain, fallback: vitalsDay?.strain) { String(format: "%.1f", $0) } ?? "—"
+        StrainScorer.effectiveEffort(live: nil, stored: displayDay?.strain)
+            .map { String(format: "%.1f", $0) } ?? "—"
     }
     private var hrvText: String {
         value(displayDay?.avgHrv, fallback: vitalsDay?.avgHrv) { "\(Int($0.rounded())) ms" } ?? "—"
@@ -142,6 +141,20 @@ struct PersonalTodayView: View {
               fallback: vitalsDay?.restingHr.map(Double.init)) { "\(Int($0.rounded())) bpm" } ?? "—"
     }
 
+    /// Provenance is attached to the value that actually fell back, never inferred from row existence.
+    private var recoveryProvenance: String? {
+        guard displayDay?.recovery == nil, recoveryDay?.recovery != nil else { return nil }
+        return recoveryDay?.day
+    }
+    private var hrvProvenance: String? {
+        guard displayDay?.avgHrv == nil, vitalsDay?.avgHrv != nil else { return nil }
+        return vitalsDay?.day
+    }
+    private var rhrProvenance: String? {
+        guard displayDay?.restingHr == nil, vitalsDay?.restingHr != nil else { return nil }
+        return vitalsDay?.day
+    }
+
     /// Today-first with an honest fallback to the last vitals day.
     private func value<T>(_ today: T?, fallback: T?, format: (T) -> String) -> String? {
         if let today { return format(today) }
@@ -149,7 +162,8 @@ struct PersonalTodayView: View {
         return nil
     }
 
-    private func glanceTile(label: LocalizedStringKey, value: String, tint: Color) -> some View {
+    private func glanceTile(label: LocalizedStringKey, value: String,
+                            provenance: String? = nil, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(label).strandOverline()
             Text(value)
@@ -157,6 +171,11 @@ struct PersonalTodayView: View {
                 .foregroundStyle(tint)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
+            if let provenance {
+                Text(verbatim: provenance)
+                    .font(StrandFont.footnote)
+                    .foregroundStyle(StrandPalette.textTertiary)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
