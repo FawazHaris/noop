@@ -720,6 +720,49 @@ add("structured today + last night", [
     "структурированные данные за сегодня + прошлую ночь", "今天 + 昨晚的结构化数据", "今天 + 昨晚的結構化資料"
 ])
 
+
+add("Wrist", [
+    "Handgelenk", "Muñeca", "Poignet", "Polso", "Nadgarstek",
+    "Pulso", "Запястье", "手腕", "手腕"
+])
+
+add("Bonded", [
+    "Gekoppelt", "Vinculada", "Associé", "Associato", "Sparowany",
+    "Emparelhado", "Сопряжено", "已绑定", "已綁定"
+])
+
+add("Reconnect", [
+    "Neu verbinden", "Reconectar", "Reconnecter", "Riconnetti", "Połącz ponownie",
+    "Voltar a ligar", "Переподключить", "重新连接", "重新連線"
+])
+
+add("On", [
+    "Ein", "Activado", "Activé", "Attivo", "Wł.",
+    "Ligado", "Вкл.", "开", "開"
+])
+
+add("Alarm schedules", [
+    "Alarm-Zeitpläne", "Horarios de alarma", "Programmations d’alarme",
+    "Pianificazioni allarme", "Harmonogramy alarmów", "Horários de alarme",
+    "Расписания будильников", "闹钟计划", "鬧鐘排程"
+])
+
+add("Add schedule", [
+    "Zeitplan hinzufügen", "Añadir horario", "Ajouter une programmation",
+    "Aggiungi pianificazione", "Dodaj harmonogram", "Adicionar horário",
+    "Добавить расписание", "添加计划", "加入排程"
+])
+
+add("Schedule", [
+    "Zeitplan", "Horario", "Programmation", "Pianificazione", "Harmonogram",
+    "Horário", "Расписание", "计划", "排程"
+])
+
+add("Ask Coach", [
+    "Coach fragen", "Preguntar al Coach", "Demander au Coach", "Chiedi al Coach",
+    "Zapytaj Coacha", "Perguntar ao Coach", "Спросить Coach", "询问 Coach", "詢問 Coach"
+])
+
 text = CATALOG.read_text(encoding="utf-8")
 catalog = json.loads(text)
 pending = [(key, value) for key, value in ENTRIES.items() if key not in catalog.get("strings", {})]
