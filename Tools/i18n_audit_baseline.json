@@ -939,6 +939,138 @@
       "\\(DateFormatterCache.day.string(from: day.date)) · recovery \\(Int(score.rounded()))"
     ],
     [
+      "Strand/App/RootView.swift",
+      "Alarms"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Apple Health"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Automations"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Backup & Sync"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Battery \\(Int($0))%"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Breathe"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Coach"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Compare"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Data Sources"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Devices"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Explore"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Health"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Insights"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Intelligence"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Intervals"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Lab Book"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Live"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Mi Band"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "NOOP"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "NOOP Limitations"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Notifications"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Power saving"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Rhythm"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Settings"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Sleep"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Strap not connected"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Stress"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Test Centre"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Today"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Trends"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "What Moves You"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Workouts"
+    ],
+    [
+      "Strand/App/RootView.swift",
+      "Your Data, Fused"
+    ],
+    [
       "Strand/BLE/ConnectionGuardian.swift",
       "Bluetooth is off"
     ],
@@ -961,6 +1093,10 @@
     [
       "Strand/BLE/ConnectionGuardian.swift",
       "Connected, no live reading"
+    ],
+    [
+      "Strand/BLE/ConnectionGuardian.swift",
+      "Disconnected"
     ],
     [
       "Strand/BLE/ConnectionGuardian.swift",
@@ -989,6 +1125,10 @@
     [
       "Strand/BLE/ConnectionGuardian.swift",
       "Strap hasn't synced yet"
+    ],
+    [
+      "Strand/BLE/ConnectionGuardian.swift",
+      "Strap not connected"
     ],
     [
       "Strand/BLE/ConnectionGuardian.swift",
@@ -1212,11 +1352,35 @@
     ],
     [
       "Strand/Screens/CoachPrompts.swift",
+      "Analyse my sleep"
+    ],
+    [
+      "Strand/Screens/CoachPrompts.swift",
       "How do my last 7 days compare to my baseline?"
     ],
     [
       "Strand/Screens/CoachPrompts.swift",
+      "How's my charge trending?"
+    ],
+    [
+      "Strand/Screens/CoachPrompts.swift",
+      "What should today's training look like?"
+    ],
+    [
+      "Strand/Screens/CoachPrompts.swift",
       "What's one thing I can do tonight to recover better?"
+    ],
+    [
+      "Strand/Screens/CoachPrompts.swift",
+      "Why am I run down?"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "· may exceed small context windows"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "~\\(tokens) tokens"
     ],
     [
       "Strand/Screens/CoachView.swift",
@@ -1224,7 +1388,135 @@
     ],
     [
       "Strand/Screens/CoachView.swift",
+      "Any OpenAI-compatible server: Ollama, LM Studio, llama.cpp, or your own gateway. Stays on your network; nothing leaves \\(Platform.deviceNounPhrase)."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "API key"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "API key (optional)"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Ask out loud"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Ask your first question"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Attached: "
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Cancel"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Clear"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Clear conversation"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Clear conversation?"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Clear the saved conversation"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach is thinking"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach is thinking…"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach reads a summary of your last two weeks plus 30-day averages and recent workouts, then answers in plain language. Try a suggestion below."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach said: \\(message.text)"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach settings"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach talks only to the server URL you set. Point it at a local model (Ollama, LM Studio, llama.cpp) to keep everything on your own machine. Nothing is sent until you ask."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Coach uses your own API key. Pick a provider, paste a key, and choose a model. Your key is stored securely in the Keychain and never leaves \\(Platform.deviceNounPhrase) except as the request you make."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Connect a provider"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Connection"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Copy"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Corrected API key"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Custom model id"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Custom…"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Disconnect"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Disconnect provider"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Error: \\(message)"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Fetch the available models from \\(coach.provider.displayName) using your saved key"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Follow-up prompt: \\(prompt)"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Forget the saved key and disconnect"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Key header"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
       "measured 14-day metrics"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Model"
     ],
     [
       "Strand/Screens/CoachView.swift",
@@ -1236,7 +1528,83 @@
     ],
     [
       "Strand/Screens/CoachView.swift",
+      "Paste the corrected key. Your conversation is kept."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Provider"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Question"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Refresh models"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Refresh models from provider"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Save to Journal"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Send"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Server URL"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Share"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Stop voice input"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
       "structured today + last night"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Suggested prompt: \\(prompt)"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "This deletes the saved conversation from this device. Coach history is your own notes, not medical advice."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "This is the only feature that leaves \\(Platform.deviceNounPhrase). It sends a summary of your metrics to \\(coach.provider.displayName) using your own key. Nothing is sent until you ask."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Update key"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Use"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Use Bearer for most local servers; use x-api-key for gateways that require the key in that header."
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Use custom model"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "Voice input"
+    ],
+    [
+      "Strand/Screens/CoachView.swift",
+      "You said: \\(message.text)"
     ],
     [
       "Strand/Screens/CompareView.swift",
@@ -1919,6 +2287,114 @@
       "Typical effort, no data"
     ],
     [
+      "Strand/Screens/WristView.swift",
+      "\\(bpm)"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "\\(pct)%"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "%.2f V"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "%02d:%02d – %02d:%02d"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Actions"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Alarms"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Bonded means an encrypted pairing — the channel the strap needs for buzzes, alarms and history. On wrist defaults to true until the strap reports otherwise."
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Charging"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Device"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Everything here is read-only: NOOP reports what the strap says. Protocol-level diagnostics stay behind the Test Centre gate."
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Firmware \\(fw)"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Firmware: not reported yet this session"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "last frame \\(age) s ago"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Link"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Live stream"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "no frame yet this session"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "No strap alarm armed"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "not yet"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Open alarms"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Open Devices"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Quiet hours"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Reconnect strap"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Refresh data"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Reminder buzzes stay silent inside this window. The strap wake-alarm always fires."
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "Sync"
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "The strap holds ONE wake alarm; NOOP arms it from your alarm settings and re-arms it daily."
+    ],
+    [
+      "Strand/Screens/WristView.swift",
+      "WHOOP strap"
+    ],
+    [
       "Strand/System/CoachBriefScheduler.swift",
       "Coach brief unavailable"
     ],
@@ -1929,6 +2405,282 @@
     [
       "Strand/System/CoachBriefScheduler.swift",
       "Today's coaching brief"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "Collapsed"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "Done"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "Double tap to collapse"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "Double tap to expand"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "Expanded"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "More"
+    ],
+    [
+      "StrandiOS/App/RootTabView.swift",
+      "QUICK ACTIONS"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "A wake time. Wake schedules can be copied into the strap's single alarm."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "An app-side reminder. NOOP buzzes your wrist while it's running, and posts a phone notification as a fallback when it isn't."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "App schedules"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Arm as strap alarm"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Cancel"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Delete"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Edit"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Haptic"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "How this works"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Kind"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "next \\(Self.stamp(next))"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "No schedules yet. Add one for wake times you can copy to the strap, or reminders NOOP fires while it's running."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "No strap alarm armed"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "On the strap"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "One specific day"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "One-off wakes stay app-side because the strap alarm repeats by weekday."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Open alarms"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Pattern"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Reminder"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Save"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Schedule enabled"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Scheduled reminder from NOOP. Open the app to sync and feel it on your wrist."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "The strap holds ONE alarm — that's a hardware limit. NOOP holds as many schedules as you like. \\\"Arm as strap alarm\\\" copies a wake schedule into the strap's single alarm (the same one the Alarms screen edits). Reminders buzz your wrist only while NOOP is running on your phone — iOS suspends backgrounded apps — and schedule a phone notification as a fallback. Quiet hours silence reminders, never the wake alarm."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "The strap holds ONE wake alarm. It buzzes from the strap's own firmware, even if your phone is asleep. Edit it in Alarms."
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "Wake"
+    ],
+    [
+      "StrandiOS/Personal/PersonalAlarms.swift",
+      "When"
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "A long train, the wake-style buzz. Your real wake is the strap's own alarm, which fires even if this phone is asleep."
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "Battery warning (3 short)"
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "Event (2 short)"
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "One light buzz. Used by app-side reminders; silenced inside quiet hours."
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "Reminder (1 short)"
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "Three short buzzes. The warning pattern."
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "Two short buzzes. Marks an event you asked to feel."
+    ],
+    [
+      "StrandiOS/Personal/PersonalHapticPatterns.swift",
+      "Wake (long)"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "\\(bpm)"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "\\(h)h \\(m)m"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "\\(pct)%"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Alarm in \\(span)"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Alarm in less than a minute"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Alarm soon"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "as of \\(age) s ago"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Classic layout"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Connect and pair your strap first."
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Last night"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Liquid layout"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Next"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "no frame yet this session"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "No strap alarm armed"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Numbers come from your synced strap history. Live readings need a connected strap; the layout menu switches back to NOOP's built-in layouts."
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Open alarms"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Personal glance"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Pulls your strap's stored history immediately."
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Quick actions"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "staged from HR only"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Strap wake-alarm. It buzzes from the strap's own firmware, even if your phone is asleep."
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Sync strap"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Sync strap now"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Syncing…"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "The strap holds one wake alarm. Set it under Alarms."
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Today"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "Today layout"
+    ],
+    [
+      "StrandiOS/Personal/PersonalTodayView.swift",
+      "You now"
     ],
     [
       "StrandiOSWidgets/StressWidget.swift",
